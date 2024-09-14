@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 export default function makeFakeRecipe(overrides) {
 
     const recipe = {
-        recipeName: faker.lorem.words({ min: 1, max: 3 }),
+        recipeName: faker.food.dish(),
         cuisine: faker.helpers.arrayElement(['Chinese']),
         sourceWebsite: faker.lorem.words({ min: 1, max: 3 }),
         url: faker.internet.url(),
