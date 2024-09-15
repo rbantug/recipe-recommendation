@@ -15,11 +15,11 @@ export default function buildMakeRecipe({
       recipeName: joi.string().min(1).max(100).required(),
       cuisine: joi.string().valid('Chinese').required(),
       sourceWebsite: joi.string().valid('Made with Lau').required(),
-      url: joi.string().uri(),
-      imgUrl: joi.string().uri(),
-      description: joi.string().trim().min(0).max(200),
+      url: joi.string().uri().required(),
+      imgUrl: joi.string().uri().required(),
+      description: joi.string().trim().min(1).required(),
       ingredients: joi.array().min(1).required(),
-      isFavorite: joi.array(),
+      isFavorite: joi.array().required(),
     });
 
     const { error, value } = schema.validate({

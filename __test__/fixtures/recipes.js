@@ -5,11 +5,11 @@ export default function makeFakeRecipe(overrides) {
     const recipe = {
         recipeName: faker.food.dish(),
         cuisine: faker.helpers.arrayElement(['Chinese']),
-        sourceWebsite: faker.lorem.words({ min: 1, max: 3 }),
+        sourceWebsite: faker.helpers.arrayElement(['Made with Lau']),
         url: faker.internet.url(),
         imgUrl: faker.image.url(),
-        desciption: faker.food.description(),
-        ingredients: Array.from({ length: Math.round(Math.random() * 20) }, () => faker.food.ingredient()),
+        description: faker.food.description(),
+        ingredients: Array.from({ length: Math.round(Math.random() * 20) + 1 }, () => faker.food.ingredient()),
         isFavorite: Array.from({ length: Math.floor(Math.random() * 5) }, () => faker.string.alphanumeric({ length: 24 }))
     };
 
