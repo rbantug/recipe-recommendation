@@ -18,11 +18,11 @@ export default function makeRecipeDb({ recipesCollection }) {
     }
     // findOne
 
-    async function findByRecipeName({ recipeName }) {
-        const data = await recipesCollection?.findOne({ recipeName })
+    async function findOneRecipe(query) {
+        const data = await recipesCollection?.findOne(query)
 
         if (data === null) {
-            throw new Error('The document does not exist');
+            throw new Error('The recipe does not exist');
         }
 
         return data;
@@ -34,6 +34,6 @@ export default function makeRecipeDb({ recipesCollection }) {
 
     return Object.freeze({
         findAll,
-        findByRecipeName
+        findOneRecipe
     })
 }
