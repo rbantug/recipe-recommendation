@@ -1,4 +1,10 @@
-export default function buildMakeRecipe({
+/**
+ * This is a factory function that will return another function. makeRecipe() will be exported to the use-case and test file for recipe.js
+ * @param { Object } joi - Schema validation for Javascript objects 
+ * @returns { Function } - returns the function makeRecipe(). makeRecipe() will run schema validation using Joi. It returns an object that can't be changed outside the entity. The only thing we can do is get the properties by running methods like getRecipeName()
+ */
+
+function buildMakeRecipe({
   joi,
 }) {
   return function makeRecipe({
@@ -10,7 +16,7 @@ export default function buildMakeRecipe({
     description,
     ingredients,
     isFavorite,
-  } = {}) {
+  }) {
     const schema = joi.object({
       recipeName: joi.string().min(1).max(100).required(),
       cuisine: joi.string().valid('Chinese').required(),
@@ -49,3 +55,5 @@ export default function buildMakeRecipe({
     });
   };
 }
+
+export default buildMakeRecipe
