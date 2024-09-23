@@ -31,9 +31,36 @@ export default function makeRecipeDb({ recipesCollection }) {
     // update recipe (specifically the isFavorite array)
 
     // aggregate find
+    async function findRecipesBasedOnIngredients(ingredients) {
+        let data = [];
+
+        const pipeline = [
+            { $match: { ingredients } }
+        ]
+
+        const aggCursor = recipesCollection.aggregate(pipeline)
+
+        let i = 0;
+        for await (let doc of aggCursor) {
+            data[i] = doc
+            i++;
+        }
+
+        return data;
+    }
+
+    // insert recipe for TESTING ONLY
+
+    async function insertManyRecipes(recipeArr) {
+        return recipesCollection.insertMany(recipeArr, {
+            ordered: true,
+        })
+    }
 
     return Object.freeze({
         findAll,
-        findOneRecipe
+        findOneRecipe,
+        insertManyRecipes,
+        findRecipesBasedOnIngredients,
     })
 }
