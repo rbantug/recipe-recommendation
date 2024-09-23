@@ -61,15 +61,28 @@ describe('recipeDB', () => {
     })
 
     it('should find recipes based on a list of ingredients', async () => {
-        const inserts = await recipeDB.insertManyRecipes([
-            makeFakeRecipe({ ingredients: ['egg', 'milk', 'turkraken'] }),
-            makeFakeRecipe({ ingredients: ['rice', 'milk', 'basilisk', 'boundless charisma', 'anxiety inducing flatulence'] }),
-            makeFakeRecipe({ ingredients: ['egg', 'milk', 'flying crockpot', 'basic bamboozled'] }),
-            makeFakeRecipe({ ingredients: ['garlic', 'turnips', 'black holes are not real'] }),
-        ])
+        const sampleData = [makeFakeRecipe({ ingredients: ['egg', 'milk', 'turkraken'], recipeName: '1' }),
+        makeFakeRecipe({ ingredients: ['rice', 'milk', 'basilisk', 'boundless charisma', 'anxiety inducing flatulence'], recipeName: '2' }),
+        makeFakeRecipe({ ingredients: ['egg', 'milk', 'flying crockpot', 'basic bamboozled'], recipeName: '3' }),
+        makeFakeRecipe({ ingredients: ['garlic', 'turnips', 'black holes can\'t emotionally hurt you'], recipeName: '4' }),]
+
+        const insertArr = structuredClone(sampleData)
+
+        await recipeDB.insertManyRecipes(insertArr)
 
         const query = ['milk', 'egg']
 
         const findRecipes = await recipeDB.findRecipesBasedOnIngredients(query)
+
+        sampleData.splice(3, 1)
+        let i = 0
+
+        findRecipes.forEach(r => {
+            const { _id, ...others} = r
+            expect(others).toEqual(sampleData[i])
+            i++
+        })
+
+        expect(findRecipes.length).toBe(3)
     })
 })
