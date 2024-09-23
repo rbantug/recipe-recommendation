@@ -1,0 +1,75 @@
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
+
+import { connectDB, dropCollections, dropDB } from "../../__test__/fixtures/mongoDB.js";
+import makeRecipeDb from "./recipeDB.js";
+import makeFakeRecipe from "../../__test__/fixtures/recipes.js";
+
+let recipeDB;
+
+beforeAll(async () => {
+    const recipesCollection = await connectDB();
+    recipeDB = makeRecipeDb({ recipesCollection })
+    
+})
+
+afterAll(() => {
+    dropDB();
+})
+
+afterEach(async () => {
+    await dropCollections()
+})
+
+describe('recipeDB', () => {
+    it('should list all recipes', async () => {
+        const inserts = await recipeDB.insertManyRecipes([
+            makeFakeRecipe(),
+            makeFakeRecipe(),
+            makeFakeRecipe()
+        ])
+
+        const findAll = await recipeDB.findAll()
+
+        const idArr = Object.values(inserts.insertedIds).map(x => x.toString())
+
+        let check = true
+
+        findAll.forEach(x => {
+            let test = idArr.includes(x._id.toString())
+            if(!test) {
+                check = false
+                return
+            }
+        })
+
+        expect(inserts.insertedCount).toBe(findAll.length)
+        expect(check).toBe(true)
+    })
+
+    it('should find a single recipe', async () => {
+        const query = { recipeName: 'Flying Dumpling' }
+
+        const insert = await recipeDB.insertManyRecipes([
+            makeFakeRecipe({ recipeName: 'Flying Dumpling' })
+        ])
+
+        const findOne = await recipeDB.findOneRecipe(query)
+
+        const check = insert.insertedIds[0].toString() === findOne._id.toString()
+
+        expect(check).toBe(true)
+    })
+
+    it('should find recipes based on a list of ingredients', async () => {
+        const inserts = await recipeDB.insertManyRecipes([
+            makeFakeRecipe({ ingredients: ['egg', 'milk', 'turkraken'] }),
+            makeFakeRecipe({ ingredients: ['rice', 'milk', 'basilisk', 'boundless charisma', 'anxiety inducing flatulence'] }),
+            makeFakeRecipe({ ingredients: ['egg', 'milk', 'flying crockpot', 'basic bamboozled'] }),
+            makeFakeRecipe({ ingredients: ['garlic', 'turnips', 'black holes are not real'] }),
+        ])
+
+        const query = ['milk', 'egg']
+
+        const findRecipes = await recipeDB.findRecipesBasedOnIngredients(query)
+    })
+})
