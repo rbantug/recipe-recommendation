@@ -31,11 +31,17 @@ export default function makeRecipeDb({ recipesCollection }) {
     // update recipe (specifically the isFavorite array)
 
     // aggregate find
-    async function findRecipesBasedOnIngredients(ingredients) {
+    async function findRecipesBasedOnIngredients(queryIngredients) {
         let data = [];
 
         const pipeline = [
-            { $match: { ingredients } }
+            {
+                $match: {
+                    ingredients: {
+                        $in: [...queryIngredients]
+                    }
+                }
+            }
         ]
 
         const aggCursor = recipesCollection.aggregate(pipeline)
