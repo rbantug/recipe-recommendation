@@ -1,4 +1,5 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
+import { ObjectId } from "mongodb";
 
 import { connectDB, dropCollections, dropDB } from "../../__test__/fixtures/mongoDB.js";
 import makeRecipeDb from "./recipeDB.js";
@@ -68,7 +69,7 @@ describe('recipeDB', () => {
 
         const insertArr = structuredClone(sampleData)
 
-        await recipeDB.insertManyRecipes(insertArr)
+        const insert = await recipeDB.insertManyRecipes(insertArr)
 
         const query = ['milk', 'egg']
 
@@ -84,5 +85,22 @@ describe('recipeDB', () => {
         })
 
         expect(findRecipes.length).toBe(3)
+    })
+
+    it('should update isFavorite with a user\'s ObjectId', async () => {
+        const sampleData = [
+            makeFakeRecipe()
+        ]
+        const insertArr = structuredClone(sampleData)
+        const insert = await recipeDB.insertManyRecipes(insertArr)
+
+        const testUserId = ObjectId.createFromTime(1)
+
+        await recipeDB.updateIsFavorite(testUserId, insert.insertedIds['0'], sampleData[0].isFavorite)
+
+        const data = await recipeDB.findOneRecipe({ _id: insert.insertedIds['0'] })
+
+
+        expect(data.isFavorite).toEqual(expect.arrayContaining([testUserId]))
     })
 })

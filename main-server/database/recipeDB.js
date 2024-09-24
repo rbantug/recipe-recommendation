@@ -28,7 +28,32 @@ export default function makeRecipeDb({ recipesCollection }) {
         return data;
     }
 
-    // update recipe (specifically the isFavorite array)
+    /**
+     * Update recipe (specifically the isFavorite array)
+     * @param {String} userId 
+     * @param {String} recipeId 
+     * @param {Array} isFavorite 
+     * @returns
+     */
+
+    async function updateIsFavorite(userId, recipeId, isFavorite) {
+        /* if (!ObjectId.isValid(userId)) {
+            throw new Error('This is not a valid MongoDB id')
+        } */
+
+        const query = { _id: recipeId };
+        const update = { $set: { isFavorite: [...isFavorite, userId] } }
+        const option = { upsert: false }
+
+        const data = await recipesCollection.updateOne(query, update, option)
+
+        /* if (data.modifiedCount === 0) {
+            throw new Error('The document does not exist')
+        } */
+
+        return data;
+
+    }
 
     // aggregate find
     async function findRecipesBasedOnIngredients(queryIngredients) {
@@ -68,5 +93,6 @@ export default function makeRecipeDb({ recipesCollection }) {
         findOneRecipe,
         insertManyRecipes,
         findRecipesBasedOnIngredients,
+        updateIsFavorite,
     })
 }
