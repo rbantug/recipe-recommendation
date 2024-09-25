@@ -2,7 +2,7 @@ export default function makeRecipeDb({ recipesCollection }) {
     /**
      * Returns all the recipe in the collection. It accept an optional query object.
      * @param {Object} query - the default is an empty object 
-     * @returns Object
+     * @returns {Promise<any>}
      */
 
     async function findAll(query = {}) {
@@ -23,7 +23,7 @@ export default function makeRecipeDb({ recipesCollection }) {
     /**
      * Returns one recipe. It requires a query parameter.
      * @param {Object} query 
-     * @returns Object
+     * @returns {Promise<any>}
      */
 
     async function findOneRecipe(query) {
@@ -41,23 +41,15 @@ export default function makeRecipeDb({ recipesCollection }) {
      * @param {String} userId - The ObjectId of the current user
      * @param {String} recipeId - The ObjectId of the current recipe
      * @param {Array} isFavorite - An array of MongoDB ObjectId from users
-     * @returns
+     * @returns {Promise<any>}
      */
 
     async function updateIsFavorite(userId, recipeId, isFavorite) {
-        /* if (!ObjectId.isValid(userId)) {
-            throw new Error('This is not a valid MongoDB id')
-        } */
-
         const query = { _id: recipeId };
         const update = { $set: { isFavorite: [...isFavorite, userId] } }
         const option = { upsert: false }
 
         const data = await recipesCollection.updateOne(query, update, option)
-
-        /* if (data.modifiedCount === 0) {
-            throw new Error('The document does not exist')
-        } */
 
         return data;
 
@@ -66,7 +58,7 @@ export default function makeRecipeDb({ recipesCollection }) {
     /**
      * Finds recipes based on a list of ingredients. The plan is to use some sort of weight to easily sort the most relevent search result.
      * @param {Array} queryIngredients - an array of ingredients
-     * @returns Object
+     * @returns {Promise<any>}
      */
     async function findRecipesBasedOnIngredients(queryIngredients) {
         let data = [];
@@ -92,8 +84,13 @@ export default function makeRecipeDb({ recipesCollection }) {
         return data;
     }
 
-    // insert recipe for TESTING ONLY
+    // 
 
+    /**
+     * Insert multiple recipes for TESTING ONLY
+     * @param {Array} recipeArr 
+     * @returns {Promise<any>}
+     */
     async function insertManyRecipes(recipeArr) {
         return recipesCollection.insertMany(recipeArr, {
             ordered: true,
