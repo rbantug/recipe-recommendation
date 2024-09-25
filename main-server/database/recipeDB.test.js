@@ -100,7 +100,6 @@ describe('recipeDB', () => {
 
         const data = await recipeDB.findOneRecipe({ _id: insert.insertedIds['0'] })
 
-
         expect(data.isFavorite).toEqual(expect.arrayContaining([testUserId]))
     })
 })
