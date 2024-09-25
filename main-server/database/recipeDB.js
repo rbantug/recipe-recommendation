@@ -1,9 +1,12 @@
 export default function makeRecipeDb({ recipesCollection }) {
-    // findAll
+    /**
+     * Returns all the recipe in the collection. It accept an optional query object.
+     * @param {Object} query - the default is an empty object 
+     * @returns Object
+     */
 
-    async function findAll() {
+    async function findAll(query = {}) {
         let data = [];
-        const query = {}
         const documentCount = await recipesCollection?.countDocuments(query)
         const cursor = await recipesCollection?.find(query)
 
@@ -16,7 +19,12 @@ export default function makeRecipeDb({ recipesCollection }) {
         }
         return data
     }
-    // findOne
+    
+    /**
+     * Returns one recipe. It requires a query parameter.
+     * @param {Object} query 
+     * @returns Object
+     */
 
     async function findOneRecipe(query) {
         const data = await recipesCollection?.findOne(query)
@@ -30,9 +38,9 @@ export default function makeRecipeDb({ recipesCollection }) {
 
     /**
      * Update recipe (specifically the isFavorite array)
-     * @param {String} userId 
-     * @param {String} recipeId 
-     * @param {Array} isFavorite 
+     * @param {String} userId - The ObjectId of the current user
+     * @param {String} recipeId - The ObjectId of the current recipe
+     * @param {Array} isFavorite - An array of MongoDB ObjectId from users
      * @returns
      */
 
@@ -55,7 +63,11 @@ export default function makeRecipeDb({ recipesCollection }) {
 
     }
 
-    // aggregate find
+    /**
+     * Finds recipes based on a list of ingredients. The plan is to use some sort of weight to easily sort the most relevent search result.
+     * @param {Array} queryIngredients - an array of ingredients
+     * @returns Object
+     */
     async function findRecipesBasedOnIngredients(queryIngredients) {
         let data = [];
 
