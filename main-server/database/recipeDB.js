@@ -46,13 +46,12 @@ export default function makeRecipeDb({ recipesCollection }) {
 
     async function updateIsFavorite(userId, recipeId, isFavorite) {
         const query = { _id: recipeId };
-        const update = { $set: { isFavorite: [...isFavorite, userId] } }
+        const update = { $set: { isFavorite: [...isFavorite, userId], lastModified: new Date().toUTCString() } }
         const option = { upsert: false }
 
         const data = await recipesCollection.updateOne(query, update, option)
 
         return data;
-
     }
 
     /**

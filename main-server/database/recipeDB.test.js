@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { ObjectId } from "mongodb";
 
 import { connectDB, dropCollections, dropDB } from "../../__test__/fixtures/mongoDB.js";
@@ -101,5 +101,24 @@ describe('recipeDB', () => {
         const data = await recipeDB.findOneRecipe({ _id: insert.insertedIds['0'] })
 
         expect(data.isFavorite).toEqual(expect.arrayContaining([testUserId]))
+    })
+
+    it('The updated document should contain the "lastModified" property', async () => {
+        const sampleData = [
+            makeFakeRecipe()
+        ]
+        const insertArr = structuredClone(sampleData)
+        const insert = await recipeDB.insertManyRecipes(insertArr)
+
+        const testUserId = ObjectId.createFromTime(1)
+
+        await recipeDB.updateIsFavorite(testUserId, insert.insertedIds['0'], sampleData[0].isFavorite)
+
+        const data = await recipeDB.findOneRecipe({ _id: insert.insertedIds['0'] })
+
+        const testDate = new Date().toUTCString()
+
+        expect(data).toHaveProperty('lastModified')
+        expect(data.lastModified).toMatch(testDate)
     })
 })
