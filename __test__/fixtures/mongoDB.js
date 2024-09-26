@@ -20,23 +20,7 @@ export async function connectDB() {
 
 export async function dropCollections() {
     try {
-        const collectionCursor = db.listCollections()
-        const collectionArr = await collectionCursor.toArray()
-        if (collectionArr.length !== 0) {
-            collectionArr.forEach(async (collection) => {
-                try {
-                    await db.dropCollection(`${collection.name}`)
-                } catch (error) {
-                    if (error.code === 26) {
-                        console.log('collection not found');
-                    } else {
-                        throw error;
-                    }
-                }
-
-
-            })
-        }
+       await db.dropCollection('test')
     } catch (error) {
         console.log(error.message)
     }
