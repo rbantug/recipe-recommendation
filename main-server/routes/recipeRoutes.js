@@ -6,7 +6,7 @@ const recipeRouter = express.Router()
 
 recipeRouter.get('/ingredients', makeExpressCallback(recipeController.getRecipeBasedOnIngredient))
 
-recipeRouter.get('/:name', makeExpressCallback(recipeController.getRecipeByName))
+recipeRouter.get('/:name', makeExpressCallback(recipeController.getRecipesByName))
 
 recipeRouter
     .route('/')

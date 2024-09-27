@@ -1,4 +1,4 @@
-export default function makeGetRecipeByName(findRecipeByName) {
+export default function makeGetRecipeByName(findRecipesByName) {
     return async function getRecipeByName(httpRequest) {
         const headers = {
             'Content-Type': 'application/json'
@@ -7,7 +7,7 @@ export default function makeGetRecipeByName(findRecipeByName) {
         try {
             const {recipeName, ...body} = httpRequest.body
 
-            const data = await findRecipeByName(recipeName)
+            const data = await findRecipesByName(recipeName)
 
             return {
                 headers,
