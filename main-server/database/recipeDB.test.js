@@ -96,9 +96,7 @@ describe('recipeDB', () => {
 
         const testUserId = ObjectId.createFromTime(1)
 
-        await recipeDB.updateIsFavorite(testUserId, insert.insertedIds['0'], sampleData[0].isFavorite)
-
-        const data = await recipeDB.findOneRecipe({ _id: insert.insertedIds['0'] })
+        const data = await recipeDB.updateIsFavorite(testUserId, insert.insertedIds['0'], sampleData[0].isFavorite)
 
         expect(data.isFavorite).toEqual(expect.arrayContaining([testUserId]))
     })
