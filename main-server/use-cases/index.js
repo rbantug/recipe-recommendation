@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 import makeFindAllRecipes from "./findAllRecipes.js";
 import makeFindRecipesByName from "./findRecipesByName.js";
 import makeFindRecipeBasedOnIngredient from "./findRecipeBasedOnIngredient.js";
@@ -10,8 +8,8 @@ import recipesDB from "../database/index.js";
 const findAllRecipes = makeFindAllRecipes({ recipesDB });
 const findRecipesByName = makeFindRecipesByName({ recipesDB })
 const findRecipeBasedOnIngredient = makeFindRecipeBasedOnIngredient({ recipesDB })
-const findRecipeById = makeFindRecipeById({ recipesDB, ObjectId })
-const updateIsFavorite = makeUpdateIsFavorite({ recipesDB, ObjectId })
+const findRecipeById = makeFindRecipeById({ recipesDB })
+const updateIsFavorite = makeUpdateIsFavorite({ recipesDB })
 
 const recipeService = Object.freeze({
     findAllRecipes,

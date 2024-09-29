@@ -10,7 +10,7 @@ let recipesDB, findRecipeById;
 beforeAll(async () => {
     const recipesCollection = await connectDB();
     recipesDB = makeRecipeDb({ recipesCollection })
-    findRecipeById = makeFindRecipeById({ recipesDB, ObjectId })
+    findRecipeById = makeFindRecipeById({ recipesDB })
     
 })
 
