@@ -1,6 +1,6 @@
 import { beforeAll, afterAll, afterEach, it, expect, describe } from "vitest";
-import { ObjectId } from "mongodb";
 
+import identity from "../entities/recipe/id.js";
 import makeUpdateIsFavorite from "./updateIsFavorite";
 import makeFakeRecipe from "../../__test__/fixtures/recipes";
 import makeRecipeDb from "../database/recipeDB";
@@ -17,7 +17,7 @@ const insertArr = structuredClone(sampleData)
 beforeAll(async () => {
     const recipesCollection = await connectDB();
     recipesDB = makeRecipeDb({ recipesCollection })
-    updateIsFavorite = makeUpdateIsFavorite({ recipesDB, ObjectId })
+    updateIsFavorite = makeUpdateIsFavorite({ recipesDB })
     inserts = await recipesDB.insertManyRecipes(insertArr)
 })
 
@@ -35,11 +35,4 @@ describe('updateIsFavorite', () => {
         
         expect(updateIsFavorite(testObjectId)).rejects.toThrow('This is not a valid recipe id')
     })
-
-    it('should throw an error if the recipe does not exist', () => {
-        const testUserId = ObjectId.createFromTime(1)
-        const testRecipeid = '121q3aweudhkasd'
-
-        expect(updateIsFavorite(testUserId, testRecipeid, sampleData[0].isFavorite)).rejects.toThrow('The recipe does not exist')
-    }) 
 })

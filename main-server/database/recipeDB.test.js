@@ -108,7 +108,7 @@ describe('recipeDB', () => {
         expect(data.isFavorite).toEqual(expect.arrayContaining([testUserId]))
     })
 
-    it('The updated document should contain the "lastModified" property', async () => {
+    it('should update the document and add the "lastModified" property', async () => {
         const sampleData = [
             makeFakeRecipe()
         ]
@@ -127,5 +127,12 @@ describe('recipeDB', () => {
 
         expect(data).toHaveProperty('lastModified')
         expect(data.lastModified).toStrictEqual(testDate)
+    })
+
+    it('should throw an error if the document that will be updated does not exist', async () => {
+        const wrongRecipeId = 'au9oq32e'
+        const testUserId = 'aidoawd23ad'
+
+        expect(recipeDB.updateIsFavorite(testUserId, wrongRecipeId, [])).rejects.toThrow('The recipe does not exist')
     })
 })

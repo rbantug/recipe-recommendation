@@ -56,6 +56,8 @@ export default function makeRecipeDb({ recipesCollection }) {
 
         const data = await recipesCollection.findOneAndUpdate(query, update, option)
 
+        if(!data) throw new Error('The recipe does not exist')
+
         const { _id, ...modifiedData } = data
         return modifiedData;
     }
