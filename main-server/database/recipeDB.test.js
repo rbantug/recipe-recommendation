@@ -1,7 +1,6 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { ObjectId } from "mongodb";
-import { createId, isCuid } from "@paralleldrive/cuid2";
 
+import identity from "../entities/recipe/id.js";
 import { connectDB, dropCollections, dropDB } from "../../__test__/fixtures/mongoDB.js";
 import makeRecipeDb from "./recipeDB.js";
 import makeFakeRecipe from "../../__test__/fixtures/recipes.js";
@@ -99,9 +98,10 @@ describe('recipeDB', () => {
             makeFakeRecipe()
         ]
         const insertArr = structuredClone(sampleData)
-        const insert = await recipeDB.insertManyRecipes(insertArr)
+        
+        await recipeDB.insertManyRecipes(insertArr)
 
-        const testUserId = createId()
+        const testUserId = identity.makeId()
 
         const data = await recipeDB.updateIsFavorite(testUserId, sampleData[0].id, sampleData[0].isFavorite)
 
@@ -113,9 +113,10 @@ describe('recipeDB', () => {
             makeFakeRecipe()
         ]
         const insertArr = structuredClone(sampleData)
-        const insert = await recipeDB.insertManyRecipes(insertArr)
+        
+        await recipeDB.insertManyRecipes(insertArr)
 
-        const testUserId = createId()
+        const testUserId = identity.makeId()
 
         await recipeDB.updateIsFavorite(testUserId, sampleData[0].id, sampleData[0].isFavorite)
 
