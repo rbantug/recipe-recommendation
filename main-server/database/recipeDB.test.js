@@ -1,5 +1,6 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { ObjectId } from "mongodb";
+import { createId, isCuid } from "@paralleldrive/cuid2";
 
 import { connectDB, dropCollections, dropDB } from "../../__test__/fixtures/mongoDB.js";
 import makeRecipeDb from "./recipeDB.js";
@@ -23,20 +24,23 @@ afterEach(async () => {
 
 describe('recipeDB', () => {
     it('should list all recipes', async () => {
-        const inserts = await recipeDB.insertManyRecipes([
+        const sampleData = [
             makeFakeRecipe(),
             makeFakeRecipe(),
             makeFakeRecipe()
-        ])
+        ]
+        const insertArr = structuredClone(sampleData)
+
+        const inserts = await recipeDB.insertManyRecipes(insertArr)
 
         const findAll = await recipeDB.findAll()
 
-        const idArr = Object.values(inserts.insertedIds).map(x => x.toString())
+        const idArr = sampleData.map(r => r.id)
 
         let check = true
 
         findAll.forEach(x => {
-            let test = idArr.includes(x._id.toString())
+            let test = idArr.includes(x.id)
             if(!test) {
                 check = false
                 return
@@ -48,15 +52,19 @@ describe('recipeDB', () => {
     })
 
     it('should find a single recipe', async () => {
+        const sampleData = [
+            makeFakeRecipe({ recipeName: 'Flying Dumpling' })
+        ]
+
+        const insertArr = structuredClone(sampleData)
+
         const query = { recipeName: 'Flying Dumpling' }
 
-        const insert = await recipeDB.insertManyRecipes([
-            makeFakeRecipe({ recipeName: 'Flying Dumpling' })
-        ])
+        await recipeDB.insertManyRecipes(insertArr)
 
         const findOne = await recipeDB.findOneRecipe(query)
 
-        const check = insert.insertedIds[0].toString() === findOne._id.toString()
+        const check = sampleData[0].id === findOne.id
 
         expect(check).toBe(true)
     })
@@ -79,24 +87,23 @@ describe('recipeDB', () => {
         let i = 0
 
         findRecipes.forEach(r => {
-            const { _id, ...others} = r
-            expect(others).toEqual(sampleData[i])
+            expect(r).toEqual(sampleData[i])
             i++
         })
 
         expect(findRecipes.length).toBe(3)
     })
 
-    it('should update isFavorite with a user\'s ObjectId', async () => {
+    it('should update isFavorite with a user\'s id', async () => {
         const sampleData = [
             makeFakeRecipe()
         ]
         const insertArr = structuredClone(sampleData)
         const insert = await recipeDB.insertManyRecipes(insertArr)
 
-        const testUserId = ObjectId.createFromTime(1)
+        const testUserId = createId()
 
-        const data = await recipeDB.updateIsFavorite(testUserId, insert.insertedIds['0'], sampleData[0].isFavorite)
+        const data = await recipeDB.updateIsFavorite(testUserId, sampleData[0].id, sampleData[0].isFavorite)
 
         expect(data.isFavorite).toEqual(expect.arrayContaining([testUserId]))
     })
@@ -108,15 +115,16 @@ describe('recipeDB', () => {
         const insertArr = structuredClone(sampleData)
         const insert = await recipeDB.insertManyRecipes(insertArr)
 
-        const testUserId = ObjectId.createFromTime(1)
+        const testUserId = createId()
 
-        await recipeDB.updateIsFavorite(testUserId, insert.insertedIds['0'], sampleData[0].isFavorite)
+        await recipeDB.updateIsFavorite(testUserId, sampleData[0].id, sampleData[0].isFavorite)
 
-        const data = await recipeDB.findOneRecipe({ _id: insert.insertedIds['0'] })
+        const data = await recipeDB.findOneRecipe({ id: sampleData[0].id })
 
-        const testDate = new Date().toUTCString()
+        const testDate = new Date()
+        testDate.setSeconds(0,0)
 
         expect(data).toHaveProperty('lastModified')
-        expect(data.lastModified).toMatch(testDate)
+        expect(data.lastModified).toStrictEqual(testDate)
     })
 })

@@ -13,14 +13,14 @@ export default function makeRecipeDb({ recipesCollection }) {
         if (documentCount !== 0) {
             let i = 0;
             for await (let doc of cursor) {
-                const { _id, modifiedDoc } = doc
+                const { _id, ...modifiedDoc } = doc
                 data[i] = modifiedDoc;
                 i++
             }
         }
         return data
     }
-    
+
     /**
      * Returns one recipe. It requires a query parameter.
      * @param {Object} query 
@@ -34,7 +34,7 @@ export default function makeRecipeDb({ recipesCollection }) {
             throw new Error('The recipe does not exist');
         }
 
-        const { _id, modifiedData } = data
+        const { _id, ...modifiedData } = data
 
         return modifiedData;
     }
@@ -49,12 +49,14 @@ export default function makeRecipeDb({ recipesCollection }) {
 
     async function updateIsFavorite(userId, recipeId, isFavorite) {
         const query = { id: recipeId };
-        const update = { $set: { isFavorite: [...isFavorite, userId], lastModified: new Date().toUTCString() } }
+        const d = new Date()
+        d.setSeconds(0, 0)
+        const update = { $set: { isFavorite: [...isFavorite, userId], lastModified: d } }
         const option = { upsert: false, returnDocument: 'after' }
 
         const data = await recipesCollection.findOneAndUpdate(query, update, option)
 
-        const { _id, modifiedData } = data
+        const { _id, ...modifiedData } = data
         return modifiedData;
     }
 
@@ -80,7 +82,7 @@ export default function makeRecipeDb({ recipesCollection }) {
 
         let i = 0;
         for await (let doc of aggCursor) {
-            const { _id, modifiedDoc } = doc
+            const { _id, ...modifiedDoc } = doc
             data[i] = modifiedDoc
             i++;
         }
