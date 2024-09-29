@@ -4,6 +4,12 @@ import makeFakeRecipe from '../../../__test__/fixtures/recipes.js';
 import makeRecipe from "./index.js";
 
 describe('recipe', () => {
+    it('must have an id that has 24 characters', () => {
+        const wrongId = '1ioasudawd'
+        const testRecipe = makeFakeRecipe({ id: wrongId })
+        expect(() => makeRecipe(testRecipe)).toThrow('ValidationError: "id" length must be 24 characters long')
+    })
+
     it('must have a recipeName that is a string', () => {
         const wrongValues = [100, true, {pickle: 1}, ['tamarind', 9], null]
         
