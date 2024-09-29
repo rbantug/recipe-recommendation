@@ -6,12 +6,15 @@
   "scripts": {
     "main-server": "nodemon ./main-server/index.js",
     "auth-server": "nodemon ./auth-server/index.js",
-    "test": "vitest run"
+    "supertest": "cross-env NODE_ENV=supertest vitest run recipeDB.test.js",
+    "test": "vitest run findRecipeById.test.js",
+    "doc": "jsdoc -c ./jsdoc.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -23,9 +26,11 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.30.0",
+    "jsdoc": "^4.0.3",
     "mongodb-memory-server": "^10.0.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.4",
