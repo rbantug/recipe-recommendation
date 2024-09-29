@@ -13,7 +13,8 @@ export default function makeRecipeDb({ recipesCollection }) {
         if (documentCount !== 0) {
             let i = 0;
             for await (let doc of cursor) {
-                data[i] = doc;
+                const { _id, modifiedDoc } = doc
+                data[i] = modifiedDoc;
                 i++
             }
         }
@@ -33,7 +34,9 @@ export default function makeRecipeDb({ recipesCollection }) {
             throw new Error('The recipe does not exist');
         }
 
-        return data;
+        const { _id, modifiedData } = data
+
+        return modifiedData;
     }
 
     /**
@@ -45,13 +48,14 @@ export default function makeRecipeDb({ recipesCollection }) {
      */
 
     async function updateIsFavorite(userId, recipeId, isFavorite) {
-        const query = { _id: recipeId };
+        const query = { id: recipeId };
         const update = { $set: { isFavorite: [...isFavorite, userId], lastModified: new Date().toUTCString() } }
         const option = { upsert: false, returnDocument: 'after' }
 
         const data = await recipesCollection.findOneAndUpdate(query, update, option)
 
-        return data;
+        const { _id, modifiedData } = data
+        return modifiedData;
     }
 
     /**
@@ -76,7 +80,8 @@ export default function makeRecipeDb({ recipesCollection }) {
 
         let i = 0;
         for await (let doc of aggCursor) {
-            data[i] = doc
+            const { _id, modifiedDoc } = doc
+            data[i] = modifiedDoc
             i++;
         }
 
