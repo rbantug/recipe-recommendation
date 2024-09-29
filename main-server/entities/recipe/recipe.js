@@ -8,6 +8,7 @@ function buildMakeRecipe({
   joi,
 }) {
   return function makeRecipe({
+    id,
     recipeName,
     cuisine,
     sourceWebsite,
@@ -18,6 +19,7 @@ function buildMakeRecipe({
     isFavorite,
   }) {
     const schema = joi.object({
+      id: joi.string().length(24).required(),
       recipeName: joi.string().min(1).max(100).required(),
       cuisine: joi.string().valid('Chinese').required(),
       sourceWebsite: joi.string().valid('Made with Lau').required(),
@@ -29,6 +31,7 @@ function buildMakeRecipe({
     });
 
     const { error, value } = schema.validate({
+      id,
       recipeName,
       cuisine,
       sourceWebsite,
@@ -44,6 +47,7 @@ function buildMakeRecipe({
     }
 
     return Object.freeze({
+      getId: () => id,
       getRecipeName: () => recipeName,
       getCuisine: () => cuisine,
       getSourceWebsite: () => sourceWebsite,
