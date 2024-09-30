@@ -1,16 +1,16 @@
 import { beforeAll, afterAll, afterEach, it, expect, describe } from "vitest";
-import { ObjectId } from "mongodb";
 
 import makeFindRecipeById from "./findRecipeById";
 import makeRecipeDb from "../database/recipeDB";
 import { connectDB, dropCollections, dropDB } from "../../__test__/fixtures/mongoDB";
+import identity from "../entities/recipe/id";
 
 let recipesDB, findRecipeById;
 
 beforeAll(async () => {
     const recipesCollection = await connectDB();
     recipesDB = makeRecipeDb({ recipesCollection })
-    findRecipeById = makeFindRecipeById({ recipesDB })
+    findRecipeById = makeFindRecipeById({ recipesDB, isValid: identity.isValid })
     
 })
 

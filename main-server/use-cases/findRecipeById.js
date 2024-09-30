@@ -1,6 +1,6 @@
-export default function makeFindRecipeById({ recipesDB }) {
+export default function makeFindRecipeById({ recipesDB, isValid }) {
     return async function findRecipeById(recipeId) {
-        if(recipeId.length !== 24) {
+        if(!isValid(recipeId)) {
             throw new Error('This is not a valid recipe id')
         }
 

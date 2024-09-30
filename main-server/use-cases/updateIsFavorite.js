@@ -1,6 +1,6 @@
-export default function makeUpdateIsFavorite({ recipesDB }) {
+export default function makeUpdateIsFavorite({ recipesDB, isValid }) {
     return async function updateIsFavorite(userId, recipeId, isFavorite) {
-        if (userId.length !== 24) {
+        if (!isValid(userId)) {
             throw new Error('This is not a valid recipe id')
         }
 

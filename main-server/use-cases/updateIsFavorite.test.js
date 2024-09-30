@@ -17,7 +17,7 @@ const insertArr = structuredClone(sampleData)
 beforeAll(async () => {
     const recipesCollection = await connectDB();
     recipesDB = makeRecipeDb({ recipesCollection })
-    updateIsFavorite = makeUpdateIsFavorite({ recipesDB })
+    updateIsFavorite = makeUpdateIsFavorite({ recipesDB, isValid: identity.isValid })
     inserts = await recipesDB.insertManyRecipes(insertArr)
 })
 
