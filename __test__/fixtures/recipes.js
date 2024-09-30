@@ -1,8 +1,11 @@
 import { faker } from '@faker-js/faker';
 
+import identity from '../../main-server/entities/recipe/id.js';
+
 export default function makeFakeRecipe(overrides) {
 
     const recipe = {
+        id: identity.makeId(),
         recipeName: faker.food.dish(),
         cuisine: faker.helpers.arrayElement(['Chinese']),
         sourceWebsite: faker.helpers.arrayElement(['Made with Lau']),
