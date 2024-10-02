@@ -1,25 +1,13 @@
-import { beforeAll, afterAll, afterEach, it, expect, describe } from "vitest";
+import { beforeAll, it, expect, describe } from "vitest";
 
 import makeFindRecipesByName from "./findRecipesByName.js";
-import makeRecipeDb from "../database/recipeDB.js";
-import { connectDB, dropCollections, dropDB } from "../../__test__/fixtures/mongoDB.js";
 import makeFakeRecipe from '../../__test__/fixtures/recipes.js'
 
-let recipesDB, findRecipesByName;
+let recipesDB, findRecipesByName
 
-beforeAll(async () => {
-    const recipesCollection = await connectDB();
-    recipesDB = makeRecipeDb({ recipesCollection })
+beforeAll(() => {
+    recipesDB = globalThis.recipesDB
     findRecipesByName = makeFindRecipesByName({ recipesDB })
-
-})
-
-afterAll(() => {
-    dropDB();
-})
-
-afterEach(async () => {
-    await dropCollections()
 })
 
 describe('findRecipedByName', () => {

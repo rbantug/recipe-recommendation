@@ -1,24 +1,12 @@
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import identity from "../entities/recipe/id.js";
-import { connectDB, dropCollections, dropDB } from "../../__test__/fixtures/mongoDB.js";
-import makeRecipeDb from "./recipeDB.js";
 import makeFakeRecipe from "../../__test__/fixtures/recipes.js";
 
-let recipeDB;
+let recipesDB;
 
-beforeAll(async () => {
-    const recipesCollection = await connectDB();
-    recipeDB = makeRecipeDb({ recipesCollection })
-    
-})
-
-afterAll(() => {
-    dropDB();
-})
-
-afterEach(async () => {
-    await dropCollections()
+beforeAll(() => {
+    recipesDB = globalThis.recipesDB
 })
 
 describe('recipeDB', () => {
@@ -30,9 +18,9 @@ describe('recipeDB', () => {
         ]
         const insertArr = structuredClone(sampleData)
 
-        const inserts = await recipeDB.insertManyRecipes(insertArr)
+        const inserts = await recipesDB.insertManyRecipes(insertArr)
 
-        const findAll = await recipeDB.findAll()
+        const findAll = await recipesDB.findAll()
 
         const idArr = sampleData.map(r => r.id)
 
@@ -59,9 +47,9 @@ describe('recipeDB', () => {
 
         const query = { recipeName: 'Flying Dumpling' }
 
-        await recipeDB.insertManyRecipes(insertArr)
+        await recipesDB.insertManyRecipes(insertArr)
 
-        const findOne = await recipeDB.findOneRecipe(query)
+        const findOne = await recipesDB.findOneRecipe(query)
 
         const check = sampleData[0].id === findOne.id
 
@@ -76,11 +64,11 @@ describe('recipeDB', () => {
 
         const insertArr = structuredClone(sampleData)
 
-        const insert = await recipeDB.insertManyRecipes(insertArr)
+        const insert = await recipesDB.insertManyRecipes(insertArr)
 
         const query = ['milk', 'egg']
 
-        const findRecipes = await recipeDB.findRecipesBasedOnIngredients(query)
+        const findRecipes = await recipesDB.findRecipesBasedOnIngredients(query)
 
         sampleData.splice(3, 1)
         let i = 0
@@ -99,11 +87,11 @@ describe('recipeDB', () => {
         ]
         const insertArr = structuredClone(sampleData)
         
-        await recipeDB.insertManyRecipes(insertArr)
+        await recipesDB.insertManyRecipes(insertArr)
 
         const testUserId = identity.makeId()
 
-        const data = await recipeDB.updateIsFavorite(testUserId, sampleData[0].id, sampleData[0].isFavorite)
+        const data = await recipesDB.updateIsFavorite(testUserId, sampleData[0].id, sampleData[0].isFavorite)
 
         expect(data.isFavorite).toEqual(expect.arrayContaining([testUserId]))
     })
@@ -114,13 +102,13 @@ describe('recipeDB', () => {
         ]
         const insertArr = structuredClone(sampleData)
         
-        await recipeDB.insertManyRecipes(insertArr)
+        await recipesDB.insertManyRecipes(insertArr)
 
         const testUserId = identity.makeId()
 
-        await recipeDB.updateIsFavorite(testUserId, sampleData[0].id, sampleData[0].isFavorite)
+        await recipesDB.updateIsFavorite(testUserId, sampleData[0].id, sampleData[0].isFavorite)
 
-        const data = await recipeDB.findOneRecipe({ id: sampleData[0].id })
+        const data = await recipesDB.findOneRecipe({ id: sampleData[0].id })
 
         const testDate = new Date()
         testDate.setSeconds(0,0)
@@ -133,6 +121,6 @@ describe('recipeDB', () => {
         const wrongRecipeId = 'au9oq32e'
         const testUserId = 'aidoawd23ad'
 
-        expect(recipeDB.updateIsFavorite(testUserId, wrongRecipeId, [])).rejects.toThrow('The recipe does not exist')
+        expect(recipesDB.updateIsFavorite(testUserId, wrongRecipeId, [])).rejects.toThrow('The recipe does not exist')
     })
 })

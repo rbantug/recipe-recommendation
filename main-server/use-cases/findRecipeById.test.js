@@ -1,25 +1,12 @@
-import { beforeAll, afterAll, afterEach, it, expect, describe } from "vitest";
+import { it, expect, describe, beforeAll } from "vitest";
 
 import makeFindRecipeById from "./findRecipeById";
-import makeRecipeDb from "../database/recipeDB";
-import { connectDB, dropCollections, dropDB } from "../../__test__/fixtures/mongoDB";
 import identity from "../entities/recipe/id";
 
-let recipesDB, findRecipeById;
+let findRecipeById;
 
-beforeAll(async () => {
-    const recipesCollection = await connectDB();
-    recipesDB = makeRecipeDb({ recipesCollection })
-    findRecipeById = makeFindRecipeById({ recipesDB, isValid: identity.isValid })
-    
-})
-
-afterAll(() => {
-    dropDB();
-})
-
-afterEach(async () => {
-    await dropCollections()
+beforeAll(() => {
+    findRecipeById = makeFindRecipeById({ recipesDB: globalThis.recipesDB, isValid: identity.isValid })
 })
 
 describe('findRecipeById', () => {

@@ -1,12 +1,10 @@
-import { beforeAll, afterAll, afterEach, it, expect, describe } from "vitest";
+import { beforeAll, it, expect, describe } from "vitest";
 
 import identity from "../entities/recipe/id.js";
 import makeUpdateIsFavorite from "./updateIsFavorite";
 import makeFakeRecipe from "../../__test__/fixtures/recipes";
-import makeRecipeDb from "../database/recipeDB";
-import { connectDB, dropCollections, dropDB } from "../../__test__/fixtures/mongoDB";
 
-let recipesDB, updateIsFavorite, inserts;
+let updateIsFavorite;
 
 const sampleData = [
     makeFakeRecipe()
@@ -15,18 +13,9 @@ const sampleData = [
 const insertArr = structuredClone(sampleData)
 
 beforeAll(async () => {
-    const recipesCollection = await connectDB();
-    recipesDB = makeRecipeDb({ recipesCollection })
-    updateIsFavorite = makeUpdateIsFavorite({ recipesDB, isValid: identity.isValid })
-    inserts = await recipesDB.insertManyRecipes(insertArr)
-})
+    updateIsFavorite = makeUpdateIsFavorite({ recipesDB: globalThis.recipesDB, isValid: identity.isValid })
 
-afterAll(() => {
-    dropDB();
-})
-
-afterEach(async () => {
-    await dropCollections()
+    await globalThis.recipesDB.insertManyRecipes(insertArr)
 })
 
 describe('updateIsFavorite', () => {
