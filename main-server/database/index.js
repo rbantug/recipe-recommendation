@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 import makeRecipeDb from "./recipeDB.js";
 
@@ -6,7 +7,14 @@ import makeRecipeDb from "./recipeDB.js";
 // MONGODB
 ///////////////////
 
-const uri = "mongodb://superuser:superuser@localhost:6000/?authSource=admin&replicaSet=dbrs&readPreference=primary&directConnection=true&ssl=false"
+let uri
+
+if(process.env.NODE_ENV === 'supertest') {
+    const mongoServer = await MongoMemoryServer.create()
+    uri = mongoServer.getUri()
+} else {
+    uri = "mongodb://superuser:superuser@localhost:6000/?authSource=admin&replicaSet=dbrs&readPreference=primary&directConnection=true&ssl=false"
+}
 
 const client = new MongoClient(uri)
 
