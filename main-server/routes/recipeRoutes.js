@@ -4,17 +4,24 @@ import recipeController from '../controllers/index.js';
 
 const recipeRouter = express.Router()
 
-recipeRouter.get('/ingredients', makeExpressCallback(recipeController.getRecipeBasedOnIngredient))
+recipeRouter
+    .get('/ingredients', makeExpressCallback(recipeController.getRecipeBasedOnIngredient))
 
-recipeRouter.get('/:name', makeExpressCallback(recipeController.getRecipesByName))
+recipeRouter
+    .get('/:name', makeExpressCallback(recipeController.getRecipesByName))
 
 recipeRouter
     .route('/')
     .get(makeExpressCallback(recipeController.getAllRecipes))
 
 recipeRouter
-    .route('/:id')
+    .route('/recipe-by-id/:id')
     .get(makeExpressCallback(recipeController.getRecipeById))
+
+recipeRouter
+    .route('/:id')    
     .patch(makeExpressCallback(recipeController.patchUpdateIsFavorite))
+
+
 
 export default recipeRouter;
