@@ -3,33 +3,31 @@ import request from 'supertest';
 
 import Server from '../server.js'
 import makeGetRecipeById from "./getRecipeById.js";
+import singleFakeRecipe from "../../__test__/fixtures/singleFakeRecipe.js";
 
 
 describe('GET /:recipeId', () => {
     const { app } = new Server()
 
     describe('given a valid recipeId', async () => {   
-        const response = await request(app).get('/api/v1/recipes/recipe-by-id/asweddfsefsdsdf322fefs11')
+        const response = await request(app).get('/api/v1/recipes/recipe-by-id/n9g1665u0op218xes3z23dnu')
 
         it('should respond with status code 200', () => {
             expect(response.statusCode).toBe(200)
         })
 
         it('should respond with status: "success" and a json object in a particular format', async () => {
-            const getRecipeById = makeGetRecipeById(r => {
-                return {id: r}
+            const getRecipeById = makeGetRecipeById(() => {
+                return singleFakeRecipe
             })
             const mockRequest = {
                 params: {
-                    id: 'asweddfsefsdsdf322fefs11'
+                    id: 'n9g1665u0op218xes3z23dnu'
                 }
             }
             const mockActual = await getRecipeById(mockRequest)
-
-            expect(mockActual.headers).toStrictEqual(response.body.headers)
-            expect(mockActual.status).toBe('success')
-            expect(mockActual.status).toStrictEqual(response.body.status)
-            expect(mockActual).toHaveProperty('data')
+            
+            expect(mockActual).toEqual(response.body)
         })
     })
 

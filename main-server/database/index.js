@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 import makeRecipeDb from "./recipeDB.js";
-import makeFakeRecipe from "../../__test__/fixtures/recipes.js";
+import singleFakeRecipe from "../../__test__/fixtures/singleFakeRecipe.js";
 
 ///////////////////
 // MONGODB
@@ -37,10 +37,9 @@ const recipesCollection = await run();
 const recipesDB = makeRecipeDb({ recipesCollection })
 
 if( process.env.NODE_ENV === 'supertest' ) {
+    const insertOneRecipe = structuredClone(singleFakeRecipe)
     await recipesDB.insertManyRecipes([
-        makeFakeRecipe({ id: 'asweddfsefsdsdf322fefs11'}),
-        makeFakeRecipe({ id: 'e2hfgr20gtq6aii12llcoe9e'}),
-        makeFakeRecipe({ id: '1wn9gd525sufv1s5mt5lh62z'}),
+        insertOneRecipe
     ])
 }
 
