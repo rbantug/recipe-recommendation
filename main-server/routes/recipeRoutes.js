@@ -8,7 +8,7 @@ recipeRouter
     .get('/ingredients', makeExpressCallback(recipeController.getRecipeBasedOnIngredient))
 
 recipeRouter
-    .get('/:name', makeExpressCallback(recipeController.getRecipesByName))
+    .get('/recipe-by-name/:name', makeExpressCallback(recipeController.getRecipesByName))
 
 recipeRouter
     .route('/')

@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeAll } from "vitest";
+import { describe, expect, it } from "vitest";
 import request from 'supertest';
 
 import Server from '../server.js'
@@ -6,7 +6,7 @@ import makeGetRecipeById from "./getRecipeById.js";
 import singleFakeRecipe from "../../__test__/fixtures/singleFakeRecipe.js";
 
 
-describe('GET /:recipeId', () => {
+describe('GET /recipe-by-id/:id', () => {
     const { app } = new Server()
 
     describe('given a valid recipeId', async () => {   
