@@ -17,16 +17,14 @@ describe('GET /:recipeId', () => {
         })
 
         it('should respond with status: "success" and a json object in a particular format', async () => {
-            const getRecipeById = makeGetRecipeById(() => {
-                return singleFakeRecipe
-            })
+            const getRecipeById = makeGetRecipeById(() =>  singleFakeRecipe)
             const mockRequest = {
                 params: {
                     id: 'n9g1665u0op218xes3z23dnu'
                 }
             }
             const mockActual = await getRecipeById(mockRequest)
-            
+
             expect(mockActual).toEqual(response.body)
         })
     })
