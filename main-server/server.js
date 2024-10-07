@@ -2,6 +2,8 @@ import express from 'express';
 import morgan from 'morgan';
 import ExpressMongoSanitize from 'express-mongo-sanitize';
 
+import recipeRouter from './routes/recipeRoutes.js';
+
 class Server {
   constructor() {
     this.app = express();
@@ -23,8 +25,7 @@ class Server {
   }
 
   setupRoutes() {
-    this.app.get('main-server');
-    // this.app.use('/api/v1/tours', tourRouter);
+    this.app.use('/api/v1/recipes', recipeRouter);
   }
 }
 

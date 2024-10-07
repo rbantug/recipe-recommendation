@@ -4,4 +4,4 @@ import Server from './server.js';
 dotenv.config();
 
 const server = new Server();
-server.run(3000);
+server.run(8000);
