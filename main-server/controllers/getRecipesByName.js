@@ -5,7 +5,7 @@ export default function makeGetRecipeByName(findRecipesByName) {
         }
 
         try {
-            const {recipeName, ...body} = httpRequest.body
+            const recipeName = httpRequest.params.name
 
             const data = await findRecipesByName(recipeName)
 
