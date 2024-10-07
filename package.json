@@ -6,8 +6,8 @@
   "scripts": {
     "main-server": "nodemon ./main-server/index.js",
     "auth-server": "nodemon ./auth-server/index.js",
-    "supertest": "cross-env NODE_ENV=supertest vitest run recipeDB.test.js",
-    "test": "vitest run findRecipeById.test.js",
+    "integration-test": "cross-env NODE_ENV=supertest vitest run getRecipesByName.test.js",
+    "unit-test": "vitest run --exclude ./main-server/controllers/*",
     "doc": "jsdoc -c ./jsdoc.json"
   },
   "keywords": [],
@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
-    "cookie-parser": "^1.4.6",
+    "cookie-parser": "^1.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.0",
+    "@types/supertest": "^6.0.2",
     "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
