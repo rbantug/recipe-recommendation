@@ -6,7 +6,8 @@ export default function makeFindRecipesByName({ recipesDB }) {
 
         const query = {
             recipeName: {
-                $regex: `${recipeName}`
+                $regex: `${recipeName}`,
+                $options: 'i'
             }
         }
 
