@@ -4,7 +4,7 @@ import makeFindRecipeBasedOnIngredient from "./findRecipeBasedOnIngredient.js";
 import makeFindRecipeById from "./findRecipeById.js";
 import makeUpdateIsFavorite from "./updateIsFavorite.js";
 import recipesDB from "../database/index.js";
-import identity from "../entities/recipe/id.js";
+import identity from "../../utils/id.js";
 
 const findAllRecipes = makeFindAllRecipes({ recipesDB });
 const findRecipesByName = makeFindRecipesByName({ recipesDB })

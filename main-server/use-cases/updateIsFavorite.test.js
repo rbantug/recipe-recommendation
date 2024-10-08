@@ -1,6 +1,6 @@
 import { beforeAll, it, expect, describe } from "vitest";
 
-import identity from "../entities/recipe/id.js";
+import identity from "../../utils/id.js";
 import makeUpdateIsFavorite from "./updateIsFavorite";
 import makeFakeRecipe from "../../__test__/fixtures/recipes";
 

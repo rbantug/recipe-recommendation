@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import identity from '../../main-server/entities/recipe/id.js';
+import identity from '../../utils/id.js';
 
 export default function makeFakeRecipe(overrides) {
 
