@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import identity from '../../utils/id';
+import identity from '../../utils/id.js';
 
 export default function makeFakeUser(overrides) {
 
