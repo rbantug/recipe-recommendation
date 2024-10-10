@@ -20,13 +20,14 @@ function buildMakeUser({
       passwordResetExpires,
       favoriteRecipes,
       createdAt,
+      lastModified,
       active
 
     }) {
       const schema = joi.object({
         id: joi.string().length(24).required(),
         email: joi.string().email().required(),
-        username: joi.string().length(50).required(),
+        userName: joi.string().length(50).required(),
         fullName: joi.string().length(50).required(),
         role: joi.string().valid(['user', 'admin']).required(),
         password: joi.string().min(6).max(20).required(),
@@ -36,13 +37,14 @@ function buildMakeUser({
         passwordResetExpires: joi.date(),
         favoriteRecipes: joi.array(),
         createdAt: joi.date(),
-        active: joi.boolean()
+        active: joi.boolean(),
+        lastModified: joi.date()
       });
   
       const { error, value } = schema.validate({
         id,
         email,
-        username,
+        userName,
         fullName,
         role,
         password,
@@ -52,7 +54,8 @@ function buildMakeUser({
         passwordResetExpires,
         favoriteRecipes,
         createdAt,
-        active
+        active,
+        lastModified
       }, { convert: false });
   
       if (error) {
@@ -63,9 +66,11 @@ function buildMakeUser({
         getId: () => id,
         getEmail: () => email,
         getFullName: () => fullName,
+        getUserName: () => userName,
         getRole: () => role,
         getFavoriteRecipes: () => favoriteRecipes,
         getCreatedAt: () => createdAt,
+        getLastModified: () => lastModified,
         getActive: () => active
       });
     };
