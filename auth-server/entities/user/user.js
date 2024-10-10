@@ -10,7 +10,7 @@ function buildMakeUser({
     return function makeUser({
       id,
       email,
-      username,
+      userName,
       fullName,
       role,
       password,
@@ -19,11 +19,10 @@ function buildMakeUser({
       passwordResetToken,
       passwordResetExpires,
       favoriteRecipes,
-      createdAt,
+      createdAt = Date.now(),
       lastModified,
-      active
-
-    }) {
+      active = true
+    } = {}) {
       const schema = joi.object({
         id: joi.string().length(24).required(),
         email: joi.string().email().required(),
