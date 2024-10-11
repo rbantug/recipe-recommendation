@@ -19,6 +19,10 @@ export default function makeFakeUser(overrides) {
         password: faker.internet.password({
             length: 10
         }),
+        passwordConfirm: this.password,
+        passwordChangedAt: faker.date.soon(),
+        passwordResetToken: faker.string.alphanumeric(10),
+        passwordResetExpires: faker.date.soon(),
         favoriteRecipes: Array.from({ length: Math.floor(Math.random() * 5) }, () => faker.string.alphanumeric({ length: 24 })),
         createdAt: new Date(),
         lastModified: faker.date.soon(),
