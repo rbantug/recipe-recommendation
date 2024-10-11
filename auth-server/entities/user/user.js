@@ -26,11 +26,15 @@ function buildMakeUser({
       const schema = joi.object({
         id: joi.string().length(24).required(),
         email: joi.string().email().required(),
-        userName: joi.string().length(50).required(),
-        fullName: joi.string().length(50).required(),
-        role: joi.string().valid(['user', 'admin']).required(),
+        userName: joi.string().max(50).required(),
+        fullName: joi.string().max(50).required(),
+        role: joi.string().valid('user', 'admin').required(),
         password: joi.string().min(6).required(),
-        passwordConfirm: joi.string().min(6).max(20),
+        passwordConfirm: joi.string().custom((value, helper) => {
+          if(value !== password) {
+            return helper.message('"passwordConfirm" is not the same with "password"')
+          }
+        }),
         passwordChangedAt: joi.date(),
         passwordResetToken: joi.string(),
         passwordResetExpires: joi.date(),
