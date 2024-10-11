@@ -1,7 +1,7 @@
 import { it, expect, describe, beforeAll } from "vitest";
 
-import makeFindRecipeById from "./findRecipeById";
-import identity from "../entities/recipe/id";
+import makeFindRecipeById from "./findRecipeById.js";
+import identity from "../../utils/id.js"
 
 let findRecipeById;
 
