@@ -10,9 +10,9 @@ beforeAll(() => {
 })
 
 describe('findRecipeById', () => {
-    it('should accept valid object ids', () => {
-        const testObjectId = '12asopduajdw'
+    it('should accept valid ids', () => {
+        const wrongId = '12asopduajdw'
         
-        expect(findRecipeById(testObjectId)).rejects.toThrow('This is not a valid recipe id')
+        expect(findRecipeById(wrongId)).rejects.toThrow('This is not a valid recipe id')
     })
 })
