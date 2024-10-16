@@ -21,11 +21,13 @@ export default function makeUserDb({ usersCollection }) {
     // findOne
 
     async function findOneUser(query) {
-        const data = await usersCollection?.findOne({ query })
+        const documentCount = await usersCollection?.countDocuments(query)
 
-        if (data === null) {
-            throw new Error('The user does not exist');
+        if(documentCount === 0) {
+            throw new Error('The user does not exist')
         }
+
+        const data = await usersCollection?.findOne(query)
 
         const { _id, ...modifiedData } = data
 
@@ -34,8 +36,8 @@ export default function makeUserDb({ usersCollection }) {
 
     // create single user
 
-    async function insertUser({ ...userInfo }) {
-        const insertData = structuredClone({ userInfo })
+    async function insertUser(userInfo) {
+        const insertData = structuredClone(userInfo)
 
         const data = await usersCollection.insertOne(insertData)
 
@@ -45,10 +47,24 @@ export default function makeUserDb({ usersCollection }) {
     // update single user
 
     async function updateUser(userId, userInfo) {
+        // check if user exist in the database
+        const documentCount = await usersCollection?.countDocuments({
+            id: userId
+        })
+
+        if(documentCount === 0) {
+            throw new Error('The user does not exist')
+        }
+        // check if userInfo to be updated contains "password", "confirmPassword" or "id" properties
+        const props = Object.keys(userInfo)
+        for (let x of props) {
+            if(x === 'password' || x === 'confirmPassword' || x === 'id') {
+                throw new Error('You can\'t change these properties')
+            }
+        }
+
         const query = { id: userId }
         const d = new Date()
-        d.setSeconds(0, 0)
-        // FIXME: lastModified could be duplicated if updateUser runs. This code might fail.
         const update = {
             $set: {
                 ...userInfo,
@@ -63,8 +79,6 @@ export default function makeUserDb({ usersCollection }) {
 
         const data = await usersCollection.findOneAndUpdate(query, update, option)
 
-        if (!data) throw new Error('The user does not exist')
-
         const { _id, ...modifiedData } = data
         return modifiedData
 
@@ -73,7 +87,19 @@ export default function makeUserDb({ usersCollection }) {
     // delete user
 
     async function deleteUser(query) {
+        // check if there are documents that fits the query
+        const documentCount = await usersCollection?.countDocuments(query)
+
+        if(documentCount === 0) {
+            throw new Error('This user does not exist')
+        }
+
+        if(documentCount > 1) {
+            throw new Error('This query is invalid')
+        }
+
         await usersCollection.deleteOne(query)
+        return 'User was deleted'
     }
 
     return Object.freeze({
