@@ -28,11 +28,13 @@ export default function makeRecipeDb({ recipesCollection }) {
      */
 
     async function findOneRecipe(query) {
-        const data = await recipesCollection?.findOne(query)
+        const documentCount = await recipesCollection?.countDocuments(query)
 
-        if (data === null) {
+        if(documentCount === 0) {
             throw new Error('The recipe does not exist');
         }
+
+        const data = await recipesCollection?.findOne(query)
 
         const { _id, ...modifiedData } = data
 
@@ -49,14 +51,20 @@ export default function makeRecipeDb({ recipesCollection }) {
 
     async function updateIsFavorite(userId, recipeId, isFavorite) {
         const query = { id: recipeId };
+
+        // check if recipe exist
+        const documentCount = await recipesCollection?.countDocuments(query)
+
+        if(documentCount === 0) {
+            throw new Error('The recipe does not exist');
+        }
+
         const d = new Date()
-        d.setSeconds(0, 0)
+        d.setSeconds(0,0)
         const update = { $set: { isFavorite: [...isFavorite, userId], lastModified: d } }
         const option = { upsert: false, returnDocument: 'after' }
 
         const data = await recipesCollection.findOneAndUpdate(query, update, option)
-
-        if(!data) throw new Error('The recipe does not exist')
 
         const { _id, ...modifiedData } = data
         return modifiedData;
@@ -100,7 +108,9 @@ export default function makeRecipeDb({ recipesCollection }) {
      * @returns {Promise<any>}
      */
     async function insertManyRecipes(recipeArr) {
-        return recipesCollection.insertMany(recipeArr, {
+        const toBeInserted = structuredClone(recipeArr)
+
+        return recipesCollection.insertMany(toBeInserted, {
             ordered: true,
         })
     }
