@@ -45,6 +45,7 @@ describe('usersDB', () => {
 
     it('should update a single user', async () => {
         const date = new Date()
+        date.setSeconds(0,0)
 
         const newUsernamne = 'blah'
         const update = await usersDB.updateUser('ipgnhryzbaqb6v4kaus71o33', {
