@@ -6,10 +6,9 @@ import makeUserDb from "../../auth-server/database/userDB.js";
 
 if(process.env.NODE_ENV !== 'supertest') {
     beforeAll(async () => {
-        const recipesCollection = await connectDB('recipe')
-        const usersCollection = await connectDB('users')
-        globalThis.recipesDB = makeRecipeDb({ recipesCollection })
-        globalThis.usersDB = makeUserDb({ usersCollection })
+        const testCollection = await connectDB()
+        globalThis.recipesDB = makeRecipeDb({ recipesCollection: testCollection })
+        globalThis.usersDB = makeUserDb({ usersCollection: testCollection })
     })
     
     afterAll(() => {
