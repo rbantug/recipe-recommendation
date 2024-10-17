@@ -16,9 +16,8 @@ describe('recipeDB', () => {
             makeFakeRecipe(),
             makeFakeRecipe()
         ]
-        const insertArr = structuredClone(sampleData)
 
-        const inserts = await recipesDB.insertManyRecipes(insertArr)
+        const inserts = await recipesDB.insertManyRecipes(sampleData)
 
         const findAll = await recipesDB.findAll()
 
@@ -43,11 +42,9 @@ describe('recipeDB', () => {
             makeFakeRecipe({ recipeName: 'Flying Dumpling' })
         ]
 
-        const insertArr = structuredClone(sampleData)
-
         const query = { recipeName: 'Flying Dumpling' }
 
-        await recipesDB.insertManyRecipes(insertArr)
+        await recipesDB.insertManyRecipes(sampleData)
 
         const findOne = await recipesDB.findOneRecipe(query)
 
@@ -62,9 +59,7 @@ describe('recipeDB', () => {
         makeFakeRecipe({ ingredients: ['egg', 'milk', 'flying crockpot', 'basic bamboozled'], recipeName: '3' }),
         makeFakeRecipe({ ingredients: ['garlic', 'turnips', 'black holes can\'t emotionally hurt you'], recipeName: '4' }),]
 
-        const insertArr = structuredClone(sampleData)
-
-        const insert = await recipesDB.insertManyRecipes(insertArr)
+        await recipesDB.insertManyRecipes(sampleData)
 
         const query = ['milk', 'egg']
 
@@ -85,9 +80,8 @@ describe('recipeDB', () => {
         const sampleData = [
             makeFakeRecipe()
         ]
-        const insertArr = structuredClone(sampleData)
         
-        await recipesDB.insertManyRecipes(insertArr)
+        await recipesDB.insertManyRecipes(sampleData)
 
         const testUserId = identity.makeId()
 
@@ -100,9 +94,8 @@ describe('recipeDB', () => {
         const sampleData = [
             makeFakeRecipe()
         ]
-        const insertArr = structuredClone(sampleData)
         
-        await recipesDB.insertManyRecipes(insertArr)
+        await recipesDB.insertManyRecipes(sampleData)
 
         const testUserId = identity.makeId()
 
