@@ -5,14 +5,13 @@ let mongoServer;
 let connection;
 let db;
 
-export async function connectDB(collectionName) {
+export async function connectDB() {
     try {
         mongoServer = await MongoMemoryServer.create();
         connection = await MongoClient.connect(mongoServer.getUri());
-        //console.log(`${collectionName} DB is working`);
         db = connection.db()
         db.collections
-        const col = db.collection(collectionName);
+        const col = db.collection('test');
         return col
     } catch (error) {
         throw new Error(error.message);
@@ -21,10 +20,7 @@ export async function connectDB(collectionName) {
 
 export async function dropCollections() {
     try {
-        const collectionList = await db.collections()
-        for(let x of collectionList) {
-            await db.dropCollection(`${x}`)
-        }
+       await db.dropCollection('test')
     } catch (error) {
         console.log(error.message)
     }
