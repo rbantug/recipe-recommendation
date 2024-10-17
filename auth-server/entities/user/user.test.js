@@ -9,7 +9,7 @@ describe('user', () => {
         const testUser = makeFakeUser({
             id: wrongId
         })
-        expect(() => makeUser(testUser)).toThrow('ValidationError: "id" length must be 24 characters long')
+        expect(() => makeUser(testUser)).toThrow(new Error('ValidationError: "id" length must be 24 characters long'))
     })
 
     it('must have an id that is a string', () => {
@@ -17,13 +17,13 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ id: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "id" must be a string')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "id" must be a string'))
         })
     })
 
     it('must have an id that is not undefined', () => {
         const userIsUndefined = makeFakeUser({ id: undefined })
-        expect(() => makeUser(userIsUndefined)).toThrow('ValidationError: "id" is required')
+        expect(() => makeUser(userIsUndefined)).toThrow(new Error('ValidationError: "id" is required'))
     })
 
     it('must have an email in a valid format', () => {
@@ -31,7 +31,7 @@ describe('user', () => {
         const testUser = makeFakeUser({
             email: wrongEmail
         })
-        expect(() => makeUser(testUser)).toThrow('ValidationError: "email" must be a valid email')
+        expect(() => makeUser(testUser)).toThrow(new Error('ValidationError: "email" must be a valid email'))
     })
 
     it('must have an email that is a string', () => {
@@ -39,13 +39,13 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ email: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "email" must be a string')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "email" must be a string'))
         })
     })
 
     it('must have an email that is not undefined', () => {
         const userIsUndefined = makeFakeUser({ email: undefined })
-        expect(() => makeUser(userIsUndefined)).toThrow('ValidationError: "email" is required')
+        expect(() => makeUser(userIsUndefined)).toThrow(new Error('ValidationError: "email" is required'))
     })
 
     it('must have a full name that is less than 50 characters', () => {
@@ -53,7 +53,7 @@ describe('user', () => {
         const testUser = makeFakeUser({
             fullName: wrongFullName
         })
-        expect(() => makeUser(testUser)).toThrow('ValidationError: "fullName" length must be less than or equal to 50 characters long')
+        expect(() => makeUser(testUser)).toThrow(new Error('ValidationError: "fullName" length must be less than or equal to 50 characters long'))
     })
 
     it('must have a full name that is a string', () => {
@@ -61,13 +61,13 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ fullName: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "fullName" must be a string')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "fullName" must be a string'))
         })
     })
 
     it('must have a full name that is not undefined', () => {
         const userIsUndefined = makeFakeUser({ fullName: undefined })
-        expect(() => makeUser(userIsUndefined)).toThrow('ValidationError: "fullName" is required')
+        expect(() => makeUser(userIsUndefined)).toThrow(new Error('ValidationError: "fullName" is required'))
     })
 
     it('must have valid roles', () => {
@@ -75,7 +75,7 @@ describe('user', () => {
         const testUser = makeFakeUser({
             role: wrongRole
         })
-        expect(() => makeUser(testUser)).toThrow('ValidationError: "role" must be one of [user, admin]')
+        expect(() => makeUser(testUser)).toThrow(new Error('ValidationError: "role" must be one of [user, admin]'))
     })
 
     it('must have a password with a minimum of 6 characters', () => {
@@ -83,7 +83,7 @@ describe('user', () => {
         const testUser = makeFakeUser({
             password: wrongPass
         })
-        expect(() => makeUser(testUser)).toThrow('ValidationError: "password" length must be at least 6 characters lon')
+        expect(() => makeUser(testUser)).toThrow(new Error('ValidationError: "password" length must be at least 6 characters long'))
     })
 
     it('must have a password that is a string', () => {
@@ -91,13 +91,13 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ password: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "password" must be a string')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "password" must be a string'))
         })
     })
 
     it('must have a password that is not undefined', () => {
         const userIsUndefined = makeFakeUser({ password: undefined })
-        expect(() => makeUser(userIsUndefined)).toThrow('ValidationError: "password" is required')
+        expect(() => makeUser(userIsUndefined)).toThrow(new Error('ValidationError: "password" is required'))
     })
 
     it('must have a passwordConfirm that is the same with the password', () => {
@@ -105,7 +105,7 @@ describe('user', () => {
         const testUser = makeFakeUser({
             passwordConfirm: wrongPC
         })
-        expect(() => makeUser(testUser)).toThrow('ValidationError: "passwordConfirm" is not the same with "password"')
+        expect(() => makeUser(testUser)).toThrow(new Error('ValidationError: "passwordConfirm" is not the same with "password"'))
     })
 
     it('must have a passwordConfirm that is a string', () => {
@@ -113,7 +113,7 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ passwordConfirm: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "passwordConfirm" must be a string')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "passwordConfirm" must be a string'))
         })
     })
 
@@ -122,7 +122,7 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ passwordChangedAt: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "passwordChangedAt" must be a valid date')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "passwordChangedAt" must be a valid date'))
         })
     })
 
@@ -131,7 +131,7 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ passwordResetToken: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "passwordResetToken" must be a string')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "passwordResetToken" must be a string'))
         })
     })
 
@@ -140,7 +140,7 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ passwordResetExpires: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "passwordResetExpires" must be a valid date')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "passwordResetExpires" must be a valid date'))
         })
     })
 
@@ -149,7 +149,7 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ favoriteRecipes: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "favoriteRecipes" must be an array')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "favoriteRecipes" must be an array'))
         })
     })
 
@@ -158,7 +158,7 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ createdAt: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "createdAt" must be a valid date')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "createdAt" must be a valid date'))
         })
     })
 
@@ -167,7 +167,7 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ active: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "active" must be a boolean')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "active" must be a boolean'))
         })
     })
 
@@ -176,7 +176,7 @@ describe('user', () => {
 
         wrongValues.forEach(x => {
             const wrongUser = makeFakeUser({ lastModified: x })
-            expect(() => makeUser(wrongUser)).toThrow('ValidationError: "lastModified" must be a valid date')
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "lastModified" must be a valid date'))
         })
     })
 })
