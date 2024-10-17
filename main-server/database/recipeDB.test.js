@@ -121,6 +121,6 @@ describe('recipeDB', () => {
         const wrongRecipeId = 'au9oq32e'
         const testUserId = 'aidoawd23ad'
 
-        expect(recipesDB.updateIsFavorite(testUserId, wrongRecipeId, [])).rejects.toThrow('The recipe does not exist')
+        expect(recipesDB.updateIsFavorite(testUserId, wrongRecipeId, [])).rejects.toThrow(new Error('The recipe does not exist'))
     })
 })
