@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import makeFakeUser from '../../__test__/fixtures/users.js'
 
@@ -10,9 +10,11 @@ const sampleData = [
     makeFakeUser({ id: 'mgcg0pocpwnjsdmvou3x6ip5' })
 ]
 
-beforeAll(async() => {
+beforeEach(async() => {
     usersDB = globalThis.usersDB
-    await Promise.all(sampleData.map(usersDB.insertUser))
+    await usersDB.insertUser(sampleData[0])
+    await usersDB.insertUser(sampleData[1])
+    await usersDB.insertUser(sampleData[2])
 })
 
 describe('usersDB', () => {
