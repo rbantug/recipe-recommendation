@@ -26,17 +26,19 @@ describe('findRecipedByName', () => {
 
         const recipeName = 'chicken'
 
-        const insertArr = structuredClone(sampleData)
-
-        await recipesDB.insertManyRecipes(insertArr)
+        await recipesDB.insertManyRecipes(sampleData)
 
         const find = await findRecipesByName(recipeName)
         
-        sampleData.splice(2,1)
+        const correctResults = [
+            sampleData[0],
+            sampleData[1]
+        ]
+        
         let i = 0
         find.forEach(r => {
             const { _id, ...res } = r
-            expect(sampleData[i]).toEqual(res)
+            expect(correctResults[i]).toEqual(res)
             i++
         })
         expect(find.length).toBe(2)
