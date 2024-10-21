@@ -1,8 +1,8 @@
-import makeUser from "../entities/user";
+import makeUser from "../entities/user/index.js";
 
 export default function makeAddUser({ usersDB, encrypt }) {
     return async function addUser(userInfo) {
-        const user = makeUser(userInfo)
+        const user = makeUser({...userInfo, type: 'newUser'})
 
         const hashedPassword = await encrypt(user.getPassword())
 
