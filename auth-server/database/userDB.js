@@ -56,15 +56,21 @@ export default function makeUserDb({ usersCollection }) {
             throw new Error('The user does not exist')
         }
         // check if userInfo to be updated contains "password", "confirmPassword" or "id" properties
-        const props = Object.keys(userInfo)
-        for (let x of props) {
-            if(x === 'password' || x === 'confirmPassword' || x === 'id') {
-                throw new Error('You can\'t change these properties')
+
+        if(userInfo.type !== 'updatePassword' || userInfo.id) {
+            const props = Object.keys(userInfo)
+            for (let x of props) {
+                if(x === 'password' || x === 'confirmPassword' || x === 'id') {
+                    throw new Error('You can\'t change these properties')
+                }
             }
         }
 
+        delete userInfo.type
+
         const query = { id: userId }
         const d = new Date()
+        d.setSeconds(0,0)
         const update = {
             $set: {
                 ...userInfo,
@@ -74,7 +80,7 @@ export default function makeUserDb({ usersCollection }) {
         const option = {
             upsert: false,
             returnDocument: 'after',
-            projection: { password: 0, passwordConfirm: 0 }
+            //projection: { password: 0, passwordConfirm: 0 }
         }
 
         const data = await usersCollection.findOneAndUpdate(query, update, option)
