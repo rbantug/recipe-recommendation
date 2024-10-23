@@ -79,7 +79,8 @@ function buildMakeUser({
         favoriteRecipes,
         createdAt,
         active,
-        lastModified
+        lastModified,
+        type
       }, { convert: false })
   
       if (error) {
@@ -92,6 +93,7 @@ function buildMakeUser({
         const { error, value } = conditionalSchema.validate({
           password,
           passwordConfirm,
+          type
         }, { convert: false })
     
         if (error) {
