@@ -1,4 +1,4 @@
-import { it, describe, expect, beforeAll, beforeEach } from "vitest";
+import { it, describe, expect, beforeAll } from "vitest";
 
 import makeUpdatePassword from "./updatePassword";
 import makeAddUser from "./addUser";
@@ -15,7 +15,7 @@ const sampleData = [
     makeFakeUser({ id: 'rlduhwu9id93b3d86woj5sdd' })
 ]
 
-beforeAll(() => {
+beforeAll(async () => {
     usersDB = globalThis.usersDB
     updatePassword = makeUpdatePassword({
         usersDB,
@@ -25,9 +25,7 @@ beforeAll(() => {
         usersDB,
         encrypt: passwordEncrypt.encrypt
     })
-})
 
-beforeEach(async () => {
     await Promise.all(sampleData.map(addUser))
 })
 
@@ -52,6 +50,7 @@ describe('updatePassword', () => {
             lastModified: date
         }
         delete mockUser.password
+        delete mockUser.type
 
         expect(updatedUserWithoutPassword).toEqual(mockUser)
         expect(passwordEncrypt.compare(userInfo.password, password)).resolves.toBe(true)
