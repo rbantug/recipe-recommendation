@@ -25,6 +25,7 @@ describe('addUser', () => {
         const mockUser = structuredClone(sampleData[0])
         mockUser.passwordConfirm = null
         delete mockUser.password
+        delete mockUser.type
 
         const getUser = await usersDB.findOneUser({ email: 'unbridledPotato@gmail.com' })
 
