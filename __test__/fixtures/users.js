@@ -29,7 +29,8 @@ export default function makeFakeUser(overrides) {
         favoriteRecipes: Array.from({ length: Math.floor(Math.random() * 5) }, () => faker.string.alphanumeric({ length: 24 })),
         createdAt: new Date(),
         lastModified: faker.date.soon(),
-        active: faker.datatype.boolean(1.0)
+        active: faker.datatype.boolean(1.0),
+        type: 'newUser'
     }
 
     return {
