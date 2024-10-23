@@ -8,10 +8,10 @@ let db;
 export async function connectDB() {
     try {
         mongoServer = await MongoMemoryServer.create();
-        connection = await MongoClient.connect(mongoServer.getUri());
+        const uri = mongoServer.getUri()
+        connection = await MongoClient.connect(uri);
         db = connection.db()
-        db.collections
-        const col = db.collection('test');
+        const col = db.collection('mongo-test');
         return col
     } catch (error) {
         throw new Error(error.message);
@@ -20,20 +20,19 @@ export async function connectDB() {
 
 export async function dropCollections() {
     try {
-       await db.dropCollection('test')
+        await db.dropCollection('mongo-test')
     } catch (error) {
         console.log(error.message)
     }
 }
 
-export function dropDB() {
-    setTimeout(async () => {
-        try {
-            await connection.close()
-            await mongoServer.cleanup()
-            await mongoServer.stop()
-        } catch (error) {
-            console.log(error.message);
-        }
-    }, 1000)
+export async function dropDB() {
+    try {
+        await db.dropDatabase()
+        await connection.close()
+        await mongoServer.stop()
+    } catch (error) {
+        console.log(error.message);
+    }
+
 }
