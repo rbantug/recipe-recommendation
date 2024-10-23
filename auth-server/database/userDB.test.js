@@ -1,20 +1,18 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import makeFakeUser from '../../__test__/fixtures/users.js'
 
 let usersDB;
 
 const sampleData = [
-    makeFakeUser({ id: 's6w8d9m4mo8xp7zlvhhgjk8g' }),
     makeFakeUser({ id: 'ipgnhryzbaqb6v4kaus71o33' }),
+    makeFakeUser({ id: 's6w8d9m4mo8xp7zlvhhgjk8g' }),
     makeFakeUser({ id: 'mgcg0pocpwnjsdmvou3x6ip5' })
 ]
 
 beforeEach(async() => {
     usersDB = globalThis.usersDB
-    await usersDB.insertUser(sampleData[0])
-    await usersDB.insertUser(sampleData[1])
-    await usersDB.insertUser(sampleData[2])
+    await Promise.all(sampleData.map(usersDB.insertUser))
 })
 
 describe('usersDB', () => {
@@ -53,12 +51,11 @@ describe('usersDB', () => {
         })
         update.lastModified = date
 
-        const mockData = structuredClone(sampleData[1])
+        const mockData = structuredClone(sampleData[0])
         mockData.username = newUsernamne
         mockData.lastModified = date
-        const { password, passwordConfirm, ...mockActual } = mockData
 
-        expect(update).toEqual(mockActual)
+        expect(update).toEqual(mockData)
     })
 
     it('should throw an error if you try to update the "password", "confirmPassword" or "id" properties', async () => {
