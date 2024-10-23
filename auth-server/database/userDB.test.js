@@ -12,7 +12,9 @@ const sampleData = [
 
 beforeEach(async() => {
     usersDB = globalThis.usersDB
-    await Promise.all(sampleData.map(usersDB.insertUser))
+    await usersDB.insertUser(sampleData[0])
+    await usersDB.insertUser(sampleData[1])
+    await usersDB.insertUser(sampleData[2])
 })
 
 describe('usersDB', () => {
