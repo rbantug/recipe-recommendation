@@ -5,7 +5,7 @@ export default function makeUserDb({ usersCollection }) {
         let data = [];
         const option = { projection: { password: 0, passwordConfirm: 0 } }
 
-        const documentCount = await usersCollection?.countDocuments(query)
+        const documentCount = await usersCollection.countDocuments(query)
         const cursor = await usersCollection?.find(query, option)
 
         if (documentCount !== 0) {
@@ -21,7 +21,7 @@ export default function makeUserDb({ usersCollection }) {
     // findOne
 
     async function findOneUser(query) {
-        const documentCount = await usersCollection?.countDocuments(query)
+        const documentCount = await usersCollection.countDocuments(query)
 
         if(documentCount === 0) {
             throw new Error('The user does not exist')
@@ -48,7 +48,7 @@ export default function makeUserDb({ usersCollection }) {
 
     async function updateUser(userId, userInfo) {
         // check if user exist in the database
-        const documentCount = await usersCollection?.countDocuments({
+        const documentCount = await usersCollection.countDocuments({
             id: userId
         })
 
@@ -94,7 +94,7 @@ export default function makeUserDb({ usersCollection }) {
 
     async function deleteUser(query) {
         // check if there are documents that fits the query
-        const documentCount = await usersCollection?.countDocuments(query)
+        const documentCount = await usersCollection.countDocuments(query)
 
         if(documentCount === 0) {
             throw new Error('This user does not exist')
