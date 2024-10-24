@@ -1,7 +1,7 @@
 import makeUser from "../entities/user";
 
-export default function makeUpdatePassword({ usersDB, encrypt }) {
-    return async function updatePassword({ userInfo, userId }) {
+export default function makeEditPassword({ usersDB, encrypt }) {
+    return async function editPassword({ userInfo, userId }) {
         const user = makeUser({ type: 'updatePassword', ...userInfo })
 
         const hashedPassword = await encrypt(user.getPassword())

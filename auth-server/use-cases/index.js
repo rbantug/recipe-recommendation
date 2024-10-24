@@ -5,7 +5,7 @@ import makeListUsers from "./listUsers.js";
 import makeListUserById from "./listUserById.js";
 import makeListUserByEmail from "./listUserByEmail.js"
 import makeSignToken from './signToken.js';
-import makeUpdatePassword from './updatePassword.js'
+import makeEditPassword from './editPassword.js'
 
 import { usersDB } from "../database/userDB.js"
 import identity from "../../utils/id.js";
@@ -17,7 +17,7 @@ const listUsers = makeListUsers({ usersDB })
 const listUserById = makeListUserById({ usersDB, isValid: identity.isValid })
 const listUserByEmail = makeListUserByEmail({ usersDB, joi })
 const signToken = makeSignToken({ createToken: token.sign })
-const updatePassword = makeUpdatePassword({ usersDB, encrypt: passwordEncrypt.encrypt })
+const editPassword = makeEditPassword({ usersDB, encrypt: passwordEncrypt.encrypt })
 
 const userService = Object.freeze({
     addUser,
@@ -25,7 +25,7 @@ const userService = Object.freeze({
     listUserById,
     listUserByEmail,
     signToken,
-    updatePassword
+    editPassword
 })
 
 export default userService;

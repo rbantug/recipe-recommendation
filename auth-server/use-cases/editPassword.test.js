@@ -1,11 +1,11 @@
 import { it, describe, expect, beforeAll } from "vitest";
 
-import makeUpdatePassword from "./updatePassword";
+import makeEditPassword from "./editPassword.js";
 import makeAddUser from "./addUser";
 import passwordEncrypt from "../../utils/passwordEncryption";
 import makeFakeUser from "../../__test__/fixtures/users";
 
-let updatePassword
+let editPassword
 let addUser
 let usersDB
 
@@ -17,7 +17,7 @@ const sampleData = [
 
 beforeAll(async () => {
     usersDB = globalThis.usersDB
-    updatePassword = makeUpdatePassword({
+    editPassword = makeEditPassword({
         usersDB,
         encrypt: passwordEncrypt.encrypt
     })
@@ -29,14 +29,14 @@ beforeAll(async () => {
     await Promise.all(sampleData.map(addUser))
 })
 
-describe('updatePassword', () => {
+describe('editPassword', () => {
     it('should update the password of an existing user', async () => {
         const userInfo = {
             password: 'iawdhnawdaw12',
             passwordConfirm: 'iawdhnawdaw12',
         }
 
-        const update = await updatePassword({ userInfo, userId: sampleData[2].id })
+        const update = await editPassword({ userInfo, userId: sampleData[2].id })
 
         const { password, ...updatedUserWithoutPassword } = update
 
