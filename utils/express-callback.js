@@ -16,6 +16,12 @@ export default function makeExpressCallback(controller) {
           if (httpResponse.headers) {
             res.set(httpResponse.headers);
           }
+
+          if (httpResponse.cookies) {
+            httpResponse.cookies.forEach(c => {
+              res.cookies(c.name, c.payload, c.options)
+            })
+          } 
   
           if (httpResponse.status === 'success') {
             res.status(httpResponse.statusCode).json({
