@@ -1,9 +1,7 @@
 import { MongoClient } from "mongodb";
-import { MongoMemoryServer } from "mongodb-memory-server";
 import { createClient } from "valkey";
 
 import makeUserDb from "./userDB.js";
-import singleFakeUser from "../../__test__/fixtures/singleFakeUser.js";
 
 ///////////////////
 // MONGODB
@@ -12,8 +10,7 @@ import singleFakeUser from "../../__test__/fixtures/singleFakeUser.js";
 let uri
 
 if(process.env.NODE_ENV === 'supertest') {
-    const mongoServer = await MongoMemoryServer.create()
-    uri = mongoServer.getUri()
+    uri = 'mongodb://localhost:7000'
 } else {
     uri = "mongodb://superuser:superuser@localhost:6000/?authSource=admin&replicaSet=dbrs&readPreference=primary&directConnection=true&ssl=false"
 }
@@ -35,11 +32,7 @@ async function run() {
 
 const usersCollection = await run();
  
-const usersDB = makeUserDb({ usersCollection }) 
-
-if( process.env.NODE_ENV === 'supertest' ) {
-    await usersDB.insertUser(singleFakeUser)
-}
+const usersDB = makeUserDb({ usersCollection })
 
 ///////////////////
 // VALKEY
