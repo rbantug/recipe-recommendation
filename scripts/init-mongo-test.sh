@@ -16,9 +16,13 @@ do
   echo "Waiting for MongoDB to initialize... ${COUNTER}/30"
 done
 
+echo "importing test data"
+
+docker exec mongo-test ./scripts/init-import-data.sh
+
 echo "running unit test"
 
-vitest run --exclude "./main-server/controllers/*"
+cross-env NODE_ENV=supertest vitest run main-server/controllers
 
 echo "tearing down all containers"
 docker-compose -f docker-compose-mongo-test/docker-compose.yml down -v --remove-orphans

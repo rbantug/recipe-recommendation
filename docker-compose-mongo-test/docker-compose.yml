@@ -9,6 +9,9 @@ services:
     volumes:
       - mongodb:/data/db
       - ./mongo.conf:/etc/mongo.conf
+      - ./importRecipes.json:/mongo-seed/importRecipes.json
+      - ./init-db.js:/mongo-seed/init-db.js
+      - ../scripts/init-import-data.sh:/scripts/init-import-data.sh
     command: ["-f", "/etc/mongo.conf"]
 
 volumes:
