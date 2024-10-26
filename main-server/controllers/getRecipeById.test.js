@@ -3,24 +3,49 @@ import request from 'supertest';
 
 import Server from '../server.js'
 import makeGetRecipeById from "./getRecipeById.js";
-import singleFakeRecipe from "../../__test__/fixtures/singleFakeRecipe.js";
+
+const sampleData = {
+    "id": "rapzyscs9tbf0csbj54sj3sg",
+    "recipeName": "Fenugreek-crusted Pigeon",
+    "cuisine": "Chinese",
+    "sourceWebsite": "Made with Lau",
+    "url": "https://magnificent-legend.info/",
+    "imgUrl": "https://loremflickr.com/1274/3956?lock=7243858339263339",
+    "description": "Crispy fried chicken bites, seasoned with curry and served with a tangy passionfruit dipping sauce.",
+    "ingredients": [
+        "chickory",
+        "calamari",
+        "butternut pumpkin",
+        "barley",
+        "watermelon",
+        "extra virgin olive oil",
+        "tom yum",
+        "parsnip",
+        "mango",
+        "sprouts",
+        "rye bread",
+        "soy flour",
+        "barramundi"
+    ],
+    "isFavorite": []
+}
 
 
 describe('GET /recipe-by-id/:id', () => {
     const { app } = new Server()
 
-    describe('given a valid recipeId', async () => {   
-        const response = await request(app).get('/api/v1/recipes/recipe-by-id/n9g1665u0op218xes3z23dnu')
+    describe('given a valid recipeId', async () => {
+        const response = await request(app).get('/api/v1/recipes/recipe-by-id/rapzyscs9tbf0csbj54sj3sg')
 
         it('should respond with status code 200', () => {
             expect(response.statusCode).toBe(200)
         })
 
         it('should respond with status: "success" and a json object in a particular format', async () => {
-            const getRecipeById = makeGetRecipeById(() =>  singleFakeRecipe)
+            const getRecipeById = makeGetRecipeById(() => sampleData)
             const mockRequest = {
                 params: {
-                    id: 'n9g1665u0op218xes3z23dnu'
+                    id: 'rapzyscs9tbf0csbj54sj3sg'
                 }
             }
             const mockActual = await getRecipeById(mockRequest)

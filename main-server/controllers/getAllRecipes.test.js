@@ -1,9 +1,12 @@
-import { describe, expect, it, beforeAll } from "vitest";
+import { describe, expect, it } from "vitest";
 import request from 'supertest';
 
 import Server from '../server.js'
 import makeGetAllRecipes from "./getAllRecipes.js";
-import singleFakeRecipe from "../../__test__/fixtures/singleFakeRecipe.js";
+
+// TODO: When creating the docker container for the main-server, you need to add a volume that will copy the importRecipes.js
+
+import importRecipes from '../../docker-compose-mongo-test/importRecipes.json'
 
 
 describe('GET /', () => {
@@ -17,7 +20,7 @@ describe('GET /', () => {
         })
 
         it('should respond with status: "success" and a json object in a particular format', async () => {
-            const getAllRecipes = makeGetAllRecipes(() => [singleFakeRecipe])
+            const getAllRecipes = makeGetAllRecipes(() => importRecipes)
             const mockActual = await getAllRecipes()
 
             expect(mockActual).toEqual(response.body)
