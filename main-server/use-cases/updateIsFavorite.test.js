@@ -22,7 +22,7 @@ describe('updateIsFavorite', () => {
 
         const sampleUserId = 'wxoa04yer8fwzgetrchjm3ie'
 
-        const updateRecipe = updateIsFavorite(sampleUserId, testRecipeId, sampleData[0].isFavorite)
+        const updateRecipe = updateIsFavorite(sampleUserId, testRecipeId)
         
         expect(updateRecipe).rejects.toThrow('This is not a valid recipe id')
     })
@@ -32,7 +32,7 @@ describe('updateIsFavorite', () => {
 
         const getIsFavorite = sampleData[0].isFavorite
 
-        const updateRecipe = await updateIsFavorite(sampleUserId, 'wihb3j3its3rsqafyusfqm5o', getIsFavorite)
+        const updateRecipe = await updateIsFavorite(sampleUserId, 'wihb3j3its3rsqafyusfqm5o')
 
         const date = new Date()
         date.setSeconds(0,0)

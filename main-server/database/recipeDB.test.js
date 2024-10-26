@@ -99,7 +99,7 @@ describe('recipeDB', () => {
 
         const testUserId = identity.makeId()
 
-        await recipesDB.updateIsFavorite(testUserId, sampleData[0].id, sampleData[0].isFavorite)
+        await recipesDB.updateIsFavorite(testUserId, sampleData[0].id)
 
         const data = await recipesDB.findOneRecipe({ id: sampleData[0].id })
 
@@ -114,6 +114,6 @@ describe('recipeDB', () => {
         const wrongRecipeId = 'au9oq32e'
         const testUserId = 'aidoawd23ad'
 
-        expect(recipesDB.updateIsFavorite(testUserId, wrongRecipeId, [])).rejects.toThrow(new Error('The recipe does not exist'))
+        expect(recipesDB.updateIsFavorite(testUserId, wrongRecipeId)).rejects.toThrow(new Error('The recipe does not exist'))
     })
 })
