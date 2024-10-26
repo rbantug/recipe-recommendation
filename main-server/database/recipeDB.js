@@ -49,7 +49,7 @@ export default function makeRecipeDb({ recipesCollection }) {
      * @returns {Promise<any>}
      */
 
-    async function updateIsFavorite(userId, recipeId, isFavorite) {
+    async function updateIsFavorite(userId, recipeId) {
         const query = { id: recipeId };
 
         // check if recipe exist
@@ -61,6 +61,9 @@ export default function makeRecipeDb({ recipesCollection }) {
 
         const d = new Date()
         d.setSeconds(0,0)
+
+        const { isFavorite } = await recipesCollection.findOne({ id: recipeId })
+
         const update = { $set: { isFavorite: [...isFavorite, userId], lastModified: d } }
         const option = { upsert: false, returnDocument: 'after' }
 
