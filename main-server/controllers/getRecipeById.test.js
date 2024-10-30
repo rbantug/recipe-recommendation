@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import request from 'supertest';
 
 import Server from '../server.js'
-import makeGetRecipeById from "./getRecipeById.js";
 
 const sampleData = {
     "id": "rapzyscs9tbf0csbj54sj3sg",
@@ -42,15 +41,14 @@ describe('GET /recipe-by-id/:id', () => {
         })
 
         it('should respond with status: "success" and a json object in a particular format', async () => {
-            const getRecipeById = makeGetRecipeById(() => sampleData)
-            const mockRequest = {
-                params: {
-                    id: 'rapzyscs9tbf0csbj54sj3sg'
-                }
+            const mockResult = {
+                headers: { 'Content-Type': 'application/json' },
+                statusCode: 200,
+                status: 'success',
+                data: sampleData
             }
-            const mockActual = await getRecipeById(mockRequest)
 
-            expect(mockActual).toEqual(response.body)
+            expect(response.body).toEqual(mockResult)
         })
     })
 
@@ -62,16 +60,14 @@ describe('GET /recipe-by-id/:id', () => {
         })
 
         it('should respond with status: "fail" and a json object in a particular format', async () => {
-            const getRecipeById = makeGetRecipeById(() => {
-                throw Error('The recipe does not exist')
-            })
-            const mockRequest = {
-                params: {
-                    id: '16weddfsefsdsdf322fef3gn'
-                }
+            const mockResult = {
+                headers: { 'Content-Type': 'application/json' },
+                statusCode: 400,
+                status: 'fail',
+                message: 'The recipe does not exist'
             }
-            const mockActual = await getRecipeById(mockRequest)
-            expect(mockActual).toEqual(response.body)
+
+            expect(response.body).toEqual(mockResult)
         })
     })
 })
