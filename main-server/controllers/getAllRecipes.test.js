@@ -20,13 +20,18 @@ describe('GET /', () => {
         })
 
         it('should respond with status: "success" and a json object in a particular format', async () => {
-            const getAllRecipes = makeGetAllRecipes(() => importRecipes)
-            const mockActual = await getAllRecipes()
+            const mockResult = {
+                headers: { 'Content-Type': 'application/json' },
+                statusCode: 200,
+                status: 'success',
+                data: importRecipes
+            }
 
-            expect(mockActual).toEqual(response.body)
+            expect(response.body).toEqual(mockResult)
         })
     })
 
+    // This is a unit test because the only way to throw an error is if something happened to the database
     describe('throws an error', async () => {
         const getAllRecipes = makeGetAllRecipes(() => {
             throw Error('test error')
