@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import request from 'supertest';
 
-import Server from '../server.js'
+import Server from '../../server.js'
 import makeGetRecipeByName from "./getRecipesByName.js";
 
 const sampleData = {

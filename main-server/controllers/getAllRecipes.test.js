@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import request from 'supertest';
 
-import Server from '../server.js'
+import Server from '../../server.js'
 import makeGetAllRecipes from "./getAllRecipes.js";
 
 // TODO: When creating the docker container for the main-server, you need to add a volume that will copy the importRecipes.js

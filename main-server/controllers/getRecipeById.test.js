@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import request from 'supertest';
 
-import Server from '../server.js'
+import Server from '../../server.js'
 
 const sampleData = {
     "id": "rapzyscs9tbf0csbj54sj3sg",
