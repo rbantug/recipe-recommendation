@@ -8,7 +8,7 @@ import makeSignToken from './signToken.js';
 import makeEditPassword from './editPassword.js'
 import makeRemoveUser from './removeUser.js';
 
-import { usersDB } from "../database/userDB.js"
+import { usersDB } from "../../database/index.js"
 import identity from "../../utils/id.js";
 import passwordEncrypt from '../../utils/passwordEncryption.js'
 import token from '../../utils/token.js'

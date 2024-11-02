@@ -27,7 +27,7 @@ export default function makeUserDb({ usersCollection }) {
             throw new Error('The user does not exist')
         }
 
-        const data = await usersCollection?.findOne(query)
+        const data = await usersCollection.findOne(query)
 
         const { _id, ...modifiedData } = data
 

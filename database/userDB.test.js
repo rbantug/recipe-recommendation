@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import makeFakeUser from '../../__test__/fixtures/users.js'
+import makeFakeUser from '../__test__/fixtures/users.js'
 
 let usersDB;
 
@@ -10,7 +10,7 @@ const sampleData = [
     makeFakeUser({ id: 'mgcg0pocpwnjsdmvou3x6ip5' })
 ]
 
-beforeEach(async() => {
+beforeEach(async () => {
     usersDB = globalThis.usersDB
     await usersDB.insertUser(sampleData[0])
     await usersDB.insertUser(sampleData[1])
@@ -34,18 +34,18 @@ describe('usersDB', () => {
     it('should find a single user', async () => {
         const findSingleUser = await usersDB.findOneUser({ id: 'mgcg0pocpwnjsdmvou3x6ip5' })
 
-        expect(findSingleUser).toEqual(sampleData[2]) 
+        expect(findSingleUser).toEqual(sampleData[2])
     })
 
     it('should throw an error if the single user does not exist', async () => {
         const wrongId = 'dawdawd232w3sachjggdf2du'
 
-         expect(usersDB.findOneUser({ id: wrongId })).rejects.toThrow(new Error('The user does not exist'))
+        expect(usersDB.findOneUser({ id: wrongId })).rejects.toThrow(new Error('The user does not exist'))
     })
 
     it('should update a single user', async () => {
         const date = new Date()
-        date.setSeconds(0,0)
+        date.setSeconds(0, 0)
 
         const newUsernamne = 'blah'
         const update = await usersDB.updateUser('ipgnhryzbaqb6v4kaus71o33', {

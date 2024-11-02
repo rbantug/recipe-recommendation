@@ -1,6 +1,7 @@
 import { MongoClient } from "mongodb";
 
 import makeRecipeDb from "./recipeDB.js";
+import makeUserDb from "./userDB.js";
 
 ///////////////////
 // MONGODB
@@ -22,15 +23,15 @@ async function run() {
         console.log("You are now connected to the DB")
         const db = client.db("mainDB");
         const recipesCollection = db.collection('recipes')
-        return recipesCollection;
+        const usersCollection = db.collection('users')
+        return { recipesCollection, usersCollection };
     } catch (e) {
         console.error(e.message)
         client.close();
     }
 }
 
-const recipesCollection = await run();
+const { recipesCollection, usersCollection } = await run();
 
-const recipesDB = makeRecipeDb({ recipesCollection })
-
-export default recipesDB;
+export const recipesDB = makeRecipeDb({ recipesCollection })
+export const usersDB = makeUserDb({ usersCollection })

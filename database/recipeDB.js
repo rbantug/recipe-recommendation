@@ -49,6 +49,8 @@ export default function makeRecipeDb({ recipesCollection }) {
      * @returns {Promise<any>}
      */
 
+    // TODO: Refactor to make it a general purpose update method. Transfer the code that updates the isFavorite to the use case
+
     async function updateIsFavorite(userId, recipeId) {
         const query = { id: recipeId };
 
