@@ -17,7 +17,7 @@ const addUser = makeAddUser({ usersDB, encrypt: passwordEncrypt.encrypt })
 const listUsers = makeListUsers({ usersDB })
 const listUserById = makeListUserById({ usersDB, isValid: identity.isValid })
 const listUserByEmail = makeListUserByEmail({ usersDB, joi })
-const signToken = makeSignToken({ createToken: token.sign })
+const signToken = makeSignToken({ createToken: token.signToken })
 const editPassword = makeEditPassword({ usersDB, encrypt: passwordEncrypt.encrypt })
 const removeUser = makeRemoveUser({ usersDB })
 
