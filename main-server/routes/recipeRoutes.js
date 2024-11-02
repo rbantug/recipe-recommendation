@@ -1,6 +1,8 @@
 import express from 'express';
-import makeExpressCallback from '../express-callback.js';
+import makeExpressCallback from '../../utils/express-callback.js';
+import makeMiddleware from '../../utils/express-middleware.js';
 import recipeController from '../controllers/index.js';
+import userController from '../../auth-server/controllers/index.js';
 
 const recipeRouter = express.Router()
 
@@ -19,9 +21,10 @@ recipeRouter
     .get(makeExpressCallback(recipeController.getRecipeById))
 
 recipeRouter
-    .route('/:id')    
-    .patch(makeExpressCallback(recipeController.patchUpdateIsFavorite))
-
-
+    .route('/:id')
+    .patch(
+        makeMiddleware(userController.protectRoute),
+        makeExpressCallback(recipeController.patchUpdateIsFavorite),
+    )
 
 export default recipeRouter;

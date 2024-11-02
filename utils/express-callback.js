@@ -1,16 +1,28 @@
 export default function makeExpressCallback(controller) {
-    return async (req, res) => {
+    return async (req, res, next) => {
+      let cookiesPath
+
+      if(process.env.NODE_ENV === 'supertest') {
+        cookiesPath = req.headers.cookies
+      } else {
+        cookiesPath = req.cookies
+      }
+
       const httpRequest = {
         body: req.body,
         query: req.query,
         params: req.params,
         method: req.method,
         path: req.path,
+        cookies: cookiesPath,
         headers: {
           'Content-Type': req.get('Content-Type'),
           Referer: req.get('referer'),
+          ...req.headers
         },
+        user: req.user
       };
+
       controller(httpRequest)
         .then((httpResponse) => {
           if (httpResponse.headers) {
