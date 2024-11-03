@@ -20,7 +20,6 @@ export default function makeProtectRoute(listUserById, verifyToken) {
 
             // Check if the user still exist
             const currentUser = await listUserById(decodeData.userId.userId)
-            //console.log(currentUser)
             const removeProp = ['password', 'passwordConfirm', 'passwordChangedAt', 'passwordResetToken', 'passwordResetExpires', 'createdAt', 'lastModified', 'type']
             removeProp.forEach(x => delete currentUser[x])
 
@@ -32,7 +31,7 @@ export default function makeProtectRoute(listUserById, verifyToken) {
         } catch (error) {
             return {
                 headers,
-                statusCode: 400,
+                statusCode: 401,
                 status: 'fail',
                 message: error.message
             }
