@@ -1,4 +1,6 @@
-import { hash, compare } from "bcryptjs";
+import bcryptjs from "bcryptjs";
+
+const { hash, compare } = bcryptjs
 
 const passwordEncrypt = Object.freeze({
     encrypt: async (password) => await hash(password, 12),
