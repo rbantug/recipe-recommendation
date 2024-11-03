@@ -1,6 +1,5 @@
 export default function makePatchUpdateIsFavorite({ updateIsFavorite }) {
     return async function patchUpdateIsFavorite(httpRequest) {
-        console.log(httpRequest)
         const headers = {
             'Content-Type': 'application/json'
         }
