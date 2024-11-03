@@ -1,4 +1,4 @@
-import makeUser from "../entities/user";
+import makeUser from "../entities/user/index.js";
 
 export default function makeEditPassword({ usersDB, encrypt }) {
     return async function editPassword({ userInfo, userId }) {
