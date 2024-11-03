@@ -9,7 +9,7 @@ const getAllRecipes = makeGetAllRecipes(recipeService.findAllRecipes)
 const getRecipeById = makeGetRecipeById(recipeService.findRecipeById)
 const getRecipesByName = makeGetRecipesByName(recipeService.findRecipesByName)
 const getRecipeBasedOnIngredient = makeGetRecipeBasedOnIngredient(recipeService.findRecipeBasedOnIngredient)
-const patchUpdateIsFavorite = makePatchUpdateIsFavorite(recipeService.updateIsFavorite)
+const patchUpdateIsFavorite = makePatchUpdateIsFavorite({ updateIsFavorite: recipeService.updateIsFavorite })
 
 const recipeController = Object.freeze({
     getAllRecipes,
