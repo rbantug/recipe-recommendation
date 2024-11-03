@@ -1,6 +1,6 @@
 export default function makeSignToken({ createToken }) {
-    return async function signToken({ userInfo }) {
-        return createToken.sign(userInfo.id)
+    return async function signToken({ userId }) {
+        return createToken.sign(userId)
     }
 }
 
