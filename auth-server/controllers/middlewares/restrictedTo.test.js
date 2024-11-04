@@ -22,14 +22,14 @@ describe('restrictedTo middleware', () => {
             .set('authorization', [`Bearer ${testToken}`])
             //console.log(response.body)
 
-        it('should respond with status 401', () => {
-            expect(response.statusCode).toBe(401)
+        it('should respond with status 403', () => {
+            expect(response.statusCode).toBe(403)
         })
 
         it('should respond with status: "fail" and a json object in a particular format', () => {
             const mockResult = {
                 headers: { 'Content-Type': 'application/json' },
-                statusCode: 401,
+                statusCode: 403,
                 status: 'fail',
                 message: 'You are not authorized to perform this action'
               }
