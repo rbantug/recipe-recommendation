@@ -1,5 +1,5 @@
-export default function makeRestrictedTo() {
-    return function restrictedTo(req, res, next, roles) {
+export default function makeRestrictedTo(...roles) {
+    return function restrictedTo(req, res, next) {
         const headers = {
             'Content-Type': 'application/json'
         }
@@ -20,12 +20,12 @@ export default function makeRestrictedTo() {
 
             next()
         } catch (error) {
-            return {
-                headers,
-                statusCode: 403,
+            res.status(403).json({
+                headers: headers,
                 status: 'fail',
-                message: error.message
-            }
+                message: error.message,
+                statusCode: 403,
+            })
         }
     }
 

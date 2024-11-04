@@ -29,12 +29,12 @@ export default function makeProtectRoute(listUserById, verifyToken) {
             next()
             
         } catch (error) {
-            return {
-                headers,
-                statusCode: 401,
+            res.status(401).json({
+                headers: headers,
                 status: 'fail',
-                message: error.message
-            }
+                message: error.message,
+                statusCode: 401,
+            })
         }
     }
 }

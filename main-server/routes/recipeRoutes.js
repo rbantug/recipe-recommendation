@@ -1,8 +1,18 @@
 import express from 'express';
 import makeExpressCallback from '../../utils/express-callback.js';
-import makeMiddleware from '../../utils/express-middleware.js';
 import recipeController from '../controllers/index.js';
 import userController from '../../auth-server/controllers/index.js';
+
+// middlewares
+import makeProtectRoute from '../../auth-server/controllers/middlewares/protectRoute.js';
+import makeRestrictedTo from '../../auth-server/controllers/middlewares/restrictedTo.js';
+
+// use case
+import userService from '../../auth-server/use-cases/index.js';
+
+// utils
+import token from '../../utils/token.js';
+
 
 const recipeRouter = express.Router()
 
@@ -23,7 +33,8 @@ recipeRouter
 recipeRouter
     .route('/:id')
     .patch(
-        makeMiddleware(userController.protectRoute),
+        makeProtectRoute(userService.listUserById, token.verifyToken),
+        makeRestrictedTo('user'),
         makeExpressCallback(recipeController.patchUpdateIsFavorite),
     )
 
