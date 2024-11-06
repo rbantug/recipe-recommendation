@@ -5,11 +5,14 @@ import ExpressMongoSanitize from 'express-mongo-sanitize';
 import recipeRouter from "./main-server/routes/recipeRoutes.js"
 import userRouter from "./auth-server/routes/userRoutes.js"
 
+import expressGlobalErrorHandling from './utils/expressGlobalErrorHandling.js';
+
 class Server {
   constructor() {
     this.app = express();
     this.setupMiddlewares();
     this.setupRoutes();
+    this.errorHandling()
   }
 
   run(port) {
@@ -28,6 +31,28 @@ class Server {
   setupRoutes() {
     this.app.use('/api/v1/recipes', recipeRouter);
     this.app.use('/api/v1/users', userRouter);
+  }
+
+  errorHandling() {
+    this.app.use(expressGlobalErrorHandling)
+    process.on('uncaughtException', (err) => {
+      console.log('Unhandled Exception. Shutting Down...')
+      console.log(err.name, err.message);
+      process.exit(1);
+    });
+    process.on('unhandledRejection', (err) => {
+      console.log(err.name, err.message);
+      console.log('💥 Unhandled Rejection. Shutting Down...')
+      this.server.close(() => {
+        process.exit(1);
+      });
+    });
+    process.on('SIGTERM', () => {
+      console.log('👋 SIGTERM recieved, shutting DOWN!!');
+      this.server.close(() => {
+        console.log('👋 process terminated!')
+      })
+    })
   }
 }
 
