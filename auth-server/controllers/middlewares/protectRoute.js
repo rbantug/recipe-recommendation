@@ -1,4 +1,4 @@
-export default function makeProtectRoute(listUserById, verifyToken) {
+export default function makeProtectRoute(listUserById, verifyToken, AppError) {
     return async function protectRoute(httpRequest, res, next) {
         const headers = {
             'Content-Type': 'application/json'
@@ -27,14 +27,9 @@ export default function makeProtectRoute(listUserById, verifyToken) {
 
             httpRequest.user = currentUser
             next()
-            
+
         } catch (error) {
-            res.status(401).json({
-                headers: headers,
-                status: 'fail',
-                message: error.message,
-                statusCode: 401,
-            })
+            return next(new AppError(error.message, 401))
         }
     }
 }
