@@ -22,7 +22,7 @@ docker exec mongo-test bash ./scripts/init-import-data.sh
 
 echo "running unit test"
 
-cross-env NODE_ENV=supertest vitest run controllers
+cross-env TESTING=supertest vitest run controllers
 
 echo "tearing down all containers"
 docker-compose -f docker-compose-mongo-test/docker-compose.yml down -v --remove-orphans
