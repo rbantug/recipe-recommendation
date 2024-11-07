@@ -59,7 +59,34 @@ describe('PATCH /:id', () => {
     })
   })
 
-  describe('given an invalid recipeId', async () => {
+  describe('given an invalid recipeId in a "development" environment', async () => {
+    process.env.NODE_ENV = 'development'
+
+    const response = await request(app).patch('/api/v1/recipes/xxzjc67224x5ikm4adpb9s8w')
+    .set('Accept-Language', 'en')
+    .set('authorization', [`Bearer ${testToken}`])
+
+    it('should respond with status 400', () => {
+      expect(response.statusCode).toBe(400)
+    })
+
+    it('should respond with status: "fail" and a json object in a particular format', () => {
+      const mockResult = {
+        headers: { 'Content-Type': 'application/json' },
+        statusCode: 400,
+        status: 'fail',
+        message: 'The recipe does not exist'
+      }
+
+      delete response.body.stack
+
+      expect(response.body).toEqual(mockResult)
+    })
+  })
+
+  describe('given an invalid recipeId in a "production environment"', async () => {
+    process.env.NODE_ENV = 'production'
+
     const response = await request(app).patch('/api/v1/recipes/xxzjc67224x5ikm4adpb9s8w')
     .set('Accept-Language', 'en')
     .set('authorization', [`Bearer ${testToken}`])
