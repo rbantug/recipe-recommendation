@@ -9,7 +9,7 @@ import makeUserDb from "./userDB.js";
 
 let uri
 
-if(process.env.NODE_ENV === 'supertest') {
+if(process.env.TESTING === 'supertest') {
     uri = 'mongodb://localhost:7000'
 } else {
     uri = "mongodb://superuser:superuser@localhost:6000/?authSource=admin&replicaSet=dbrs&readPreference=primary&directConnection=true&ssl=false"
