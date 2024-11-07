@@ -1,8 +1,8 @@
-export default function makeExpressCallback(controller) {
+export default function makeExpressCallback(controller, AppError) {
     return async (req, res, next) => {
       let cookiesPath
 
-      if(process.env.NODE_ENV === 'supertest') {
+      if(process.env.TESTING === 'supertest') {
         cookiesPath = req.headers.cookies
       } else {
         cookiesPath = req.cookies
@@ -43,15 +43,10 @@ export default function makeExpressCallback(controller) {
               statusCode: httpResponse.statusCode,
             });
           } else if (httpResponse.status === 'fail') {
-            res.status(httpResponse.statusCode).json({
-              headers: httpResponse.headers,
-              status: httpResponse.status,
-              message: httpResponse.message,
-              statusCode: httpResponse.statusCode,
-            });
+            return next(new AppError(httpResponse.message, httpResponse.statusCode, httpResponse.headers))
           }
         })
-        .catch((e) => res.status(500).send({ error: 'An unknown error has occurred.' }));
+        .catch(err => next(new AppError(err.message, 500, httpResponse.headers)))
     };
   }
   

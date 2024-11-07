@@ -12,30 +12,31 @@ import userService from '../../auth-server/use-cases/index.js';
 
 // utils
 import token from '../../utils/token.js';
+import AppError from '../../utils/AppError.js';
 
 
 const recipeRouter = express.Router()
 
 recipeRouter
-    .get('/ingredients', makeExpressCallback(recipeController.getRecipeBasedOnIngredient))
+    .get('/ingredients', makeExpressCallback(recipeController.getRecipeBasedOnIngredient, AppError))
 
 recipeRouter
-    .get('/recipe-by-name/:name', makeExpressCallback(recipeController.getRecipesByName))
+    .get('/recipe-by-name/:name', makeExpressCallback(recipeController.getRecipesByName, AppError))
 
 recipeRouter
     .route('/')
-    .get(makeExpressCallback(recipeController.getAllRecipes))
+    .get(makeExpressCallback(recipeController.getAllRecipes, AppError))
 
 recipeRouter
     .route('/recipe-by-id/:id')
-    .get(makeExpressCallback(recipeController.getRecipeById))
+    .get(makeExpressCallback(recipeController.getRecipeById, AppError))
 
 recipeRouter
     .route('/:id')
     .patch(
-        makeProtectRoute(userService.listUserById, token.verifyToken),
-        makeRestrictedTo('user'),
-        makeExpressCallback(recipeController.patchUpdateIsFavorite),
+        makeProtectRoute(userService.listUserById, token.verifyToken, AppError),
+        makeRestrictedTo(AppError, 'user'),
+        makeExpressCallback(recipeController.patchUpdateIsFavorite, AppError),
     )
 
 export default recipeRouter;
