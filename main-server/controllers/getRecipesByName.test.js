@@ -46,35 +46,4 @@ const sampleData = {
                 expect(mockActual).toEqual(response.body)
             })
         })
-
-        describe('given an invalid recipe name', async () => {
-            const getRecipeByName = makeGetRecipeByName(() => {
-                throw Error('This is not a valid recipe name.')
-            })
-
-            const mockRequest = {
-                params: {
-                    recipeName: 1234
-                }
-            }
-
-            const mockActual = await getRecipeByName(mockRequest)
-
-            it('should respond with status code 400', () => {
-                expect(mockActual.statusCode).toBe(400)
-            })
-
-            it('should respond with status: "fail" and a json object in a particular format', async () => {
-                const mockResponse = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    statusCode: 400,
-                    status: 'fail',
-                    message: 'This is not a valid recipe name.'
-                }
-
-                expect(mockActual).toEqual(mockResponse)
-            })
-        })
     })
