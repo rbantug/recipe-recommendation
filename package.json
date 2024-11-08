@@ -8,7 +8,9 @@
     "auth-server": "nodemon ./auth-server/index.js",
     "integration-test": "cross-env NODE_ENV=supertest vitest run getRecipesByName.test.js",
     "unit-test": "vitest run --exclude ./main-server/controllers/*",
-    "doc": "jsdoc -c ./jsdoc.json"
+    "doc": "jsdoc -c ./jsdoc.json",
+    "test-docker": "sh ./scripts/init-mongo-test.sh"
+
   },
   "keywords": [],
   "author": "",
