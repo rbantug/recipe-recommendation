@@ -29,7 +29,7 @@ export default function makeProtectRoute(listUserById, verifyToken, AppError) {
             next()
 
         } catch (error) {
-            return next(new AppError(error.message, 401))
+            return next(new AppError(error.message, 401, headers))
         }
     }
 }
