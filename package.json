@@ -7,7 +7,7 @@
     "main-server": "nodemon ./main-server/index.js",
     "auth-server": "nodemon ./auth-server/index.js",
     "integration-test": "cross-env NODE_ENV=supertest vitest run getRecipesByName.test.js",
-    "unit-test": "vitest run --exclude ./main-server/controllers/*",
+    "unit-test": "vitest run entities/ database/ use-cases/",
     "doc": "jsdoc -c ./jsdoc.json",
     "test-docker": "sh ./scripts/init-mongo-test.sh"
 
