@@ -20,7 +20,7 @@ echo "importing test data"
 
 docker exec mongo-test bash ./scripts/init-import-data.sh
 
-echo "running unit test"
+echo "running integration test"
 
 cross-env TESTING=supertest vitest run controllers
 
