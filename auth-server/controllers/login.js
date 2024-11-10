@@ -8,7 +8,7 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
             const { email, password, ...userInfo } = httpRequest.body
             
             if (!email || !password) {
-                throw new Error('Please provide email and password')
+                throw new AppError('Please provide email and password', 400)
             }
 
             const getUser = await listUserByEmail(email)
@@ -16,7 +16,7 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
             const checkPassword = await passwordCompare(password, getUser.password)
 
             if (!checkPassword) {
-                throw new Error('Incorrect email or password')
+                throw new AppError('Incorrect email or password', 401)
             }
 
             const token = await signToken(getUser.id)
@@ -49,7 +49,7 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
             return {
                 headers,
                 status: 'fail',
-                statusCode: 400,
+                statusCode: error.statusCode,
                 message: error.message
             }
         }
