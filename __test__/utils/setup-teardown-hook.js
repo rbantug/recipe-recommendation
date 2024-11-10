@@ -4,7 +4,7 @@ import { connectDB, dropCollections, dropDB } from "../fixtures/mongoDB.js";
 import makeRecipeDb from "../../database/recipeDB.js";
 import makeUserDb from "../../database/userDB.js";
 
-if (process.env.NODE_ENV !== 'supertest') {
+if (process.env.TESTING !== 'supertest') {
     beforeAll(async () => {
         const testCollection = await connectDB()
         globalThis.recipesDB = makeRecipeDb({ recipesCollection: testCollection })

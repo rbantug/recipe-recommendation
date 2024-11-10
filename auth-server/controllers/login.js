@@ -6,9 +6,9 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
 
         try {
             const { email, password, ...userInfo } = httpRequest.body
-
+            
             if (!email || !password) {
-                throw new AppError('Please provide email and password', 400)
+                throw new Error('Please provide email and password')
             }
 
             const getUser = await listUserByEmail(email)
@@ -16,12 +16,12 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
             const checkPassword = await passwordCompare(password, getUser.password)
 
             if (!checkPassword) {
-                throw new AppError('Incorrect email or password', 401)
+                throw new Error('Incorrect email or password')
             }
 
-            const token = signToken({ userId: getUser.id })
+            const token = await signToken(getUser.id)
 
-            const cookies = [{
+            const cookie = [{
                 name: 'jwt',
                 payload: token,
                 options: {
@@ -43,13 +43,13 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
                     role: getUser.role,
                     favoriteRecipes: getUser.favoriteRecipes
                 },
-                cookies
+                cookie
             }
         } catch (error) {
             return {
                 headers,
                 status: 'fail',
-                statusCode: error.statusCode,
+                statusCode: 400,
                 message: error.message
             }
         }
