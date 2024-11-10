@@ -7,7 +7,7 @@ process.env.JWT_SECRET = 'papaya'
 process.env.JWT_EXPIRES_IN = 600000
 process.env.JWT_COOKIE_EXPIRES_IN = 2
 
-describe('login', () => {
+describe('POST /login', () => {
     const { app } = new Server
 
     describe('given a valid email and password', async () => {
