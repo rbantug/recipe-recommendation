@@ -20,7 +20,8 @@ export default function makeExpressCallback(controller, AppError) {
           Referer: req.get('referer'),
           ...req.headers
         },
-        user: req.user
+        user: req.user,
+        secure: req.secure
       };
 
       controller(httpRequest)
@@ -29,10 +30,9 @@ export default function makeExpressCallback(controller, AppError) {
             res.set(httpResponse.headers);
           }
 
-          if (httpResponse.cookies) {
-            httpResponse.cookies.forEach(c => {
-              res.cookies(c.name, c.payload, c.options)
-            })
+          if (httpResponse.cookie) {
+            httpResponse.cookie.forEach(c => res.cookie(c.name, c.payload, c.options)
+            )
           } 
   
           if (httpResponse.status === 'success') {
