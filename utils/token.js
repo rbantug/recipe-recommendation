@@ -20,7 +20,8 @@ async function signToken(userId) {
 
         return newToken
     } catch (error) {
-        console.log(error)
+        console.error(error)
+        return error
     }
 
 }
@@ -38,7 +39,8 @@ async function verifyToken(token) {
 
         return decodedData
     } catch (error) {
-        console.log(error)
+        console.error(error)
+        return error
     }
 }
 
