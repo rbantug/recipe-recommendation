@@ -15,13 +15,6 @@ function buildMakeUser({
     role,
     password,
     passwordConfirm,
-    passwordChangedAt,
-    passwordResetToken,
-    passwordResetExpires,
-    favoriteRecipes = [],
-    createdAt = Date.now(),
-    lastModified,
-    active = true,
     type
   } = {}) {
     const newUserSchema = joi.object({
@@ -36,13 +29,6 @@ function buildMakeUser({
           return helper.message('"passwordConfirm" is not the same with "password"')
         }
       }),
-      passwordChangedAt: joi.date(),
-      passwordResetToken: joi.string(),
-      passwordResetExpires: joi.date(),
-      favoriteRecipes: joi.array(),
-      createdAt: joi.date(),
-      active: joi.boolean(),
-      lastModified: joi.date(),
       type: 'newUser'
     });
 
@@ -73,13 +59,6 @@ function buildMakeUser({
         role,
         password,
         passwordConfirm,
-        passwordChangedAt,
-        passwordResetToken,
-        passwordResetExpires,
-        favoriteRecipes,
-        createdAt,
-        active,
-        lastModified,
         type
       }, { convert: false })
   
@@ -110,13 +89,6 @@ function buildMakeUser({
         getRole: () => role,
         getPassword: () => password,
         getPasswordConfirm: () => passwordConfirm,
-        getPasswordChangedAt: () => passwordChangedAt,
-        getPasswordResetToken: () => passwordResetToken,
-        getPasswordResetExpires: () => passwordResetExpires,
-        getFavoriteRecipes: () => favoriteRecipes,
-        getCreatedAt: () => createdAt,
-        getLastModified: () => lastModified,
-        getActive: () => active,
         getType: () => type
       });
     };
