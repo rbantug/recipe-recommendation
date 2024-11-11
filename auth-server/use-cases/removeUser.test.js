@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from "vitest";
 
 import makeRemoveUser from "./removeUser.js";
-import makeFakeUser from "../../__test__/fixtures/users.js";
+import { makeFakeNewUser } from "../../__test__/fixtures/users.js";
 import makeAddUser from "./addUser";
 import makeListUsers from "./listUsers";
 import passwordEncrypt from "../../utils/passwordEncryption.js";
@@ -12,9 +12,9 @@ let addUser
 let listUsers
 
 const sampleData = [
-    makeFakeUser({ id: '9axppnhflavp7244tz5mqobd' }),
-    makeFakeUser({ id: 'mok0ueo3f9fh28jbz3qxrwn1' }),
-    makeFakeUser({ id: 'a17d15xole94d3oonoqeot1g' })
+    makeFakeNewUser({ id: '9axppnhflavp7244tz5mqobd' }),
+    makeFakeNewUser({ id: 'mok0ueo3f9fh28jbz3qxrwn1' }),
+    makeFakeNewUser({ id: 'a17d15xole94d3oonoqeot1g' })
 ]
 
 beforeAll(async () => {
@@ -22,7 +22,7 @@ beforeAll(async () => {
     removeUser = makeRemoveUser({ usersDB })
     addUser = makeAddUser({
         usersDB,
-        encrypt: passwordEncrypt.encrypt
+        encrypt: passwordEncrypt.encryptPassword
     })
     listUsers = makeListUsers({ usersDB })
 })
