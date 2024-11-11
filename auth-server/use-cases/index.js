@@ -13,12 +13,12 @@ import identity from "../../utils/id.js";
 import passwordEncrypt from '../../utils/passwordEncryption.js'
 import token from '../../utils/token.js'
 
-const addUser = makeAddUser({ usersDB, encrypt: passwordEncrypt.encrypt })
+const addUser = makeAddUser({ usersDB, encrypt: passwordEncrypt.encryptPassword })
 const listUsers = makeListUsers({ usersDB })
 const listUserById = makeListUserById({ usersDB, isValid: identity.isValid })
 const listUserByEmail = makeListUserByEmail({ usersDB, joi })
 const signToken = makeSignToken({ createToken: token.signToken })
-const editPassword = makeEditPassword({ usersDB, encrypt: passwordEncrypt.encrypt })
+const editPassword = makeEditPassword({ usersDB, encrypt: passwordEncrypt.encryptPassword })
 const removeUser = makeRemoveUser({ usersDB })
 
 const userService = Object.freeze({
