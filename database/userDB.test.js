@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import makeFakeUser from '../__test__/fixtures/users.js'
+import { makeFakeUser } from '../__test__/fixtures/users.js'
 
 let usersDB;
 
