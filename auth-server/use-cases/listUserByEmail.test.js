@@ -2,7 +2,7 @@ import { it, expect, describe, beforeAll } from "vitest";
 import joi from 'joi'
 
 import makeListUserByEmail from "./listUserByEmail.js";
-import makeFakeUser from "../../__test__/fixtures/users.js";
+import { makeFakeUser } from "../../__test__/fixtures/users.js";
 
 let listUserByEmail
 let usersDB

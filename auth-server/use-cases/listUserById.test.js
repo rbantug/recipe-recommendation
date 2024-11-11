@@ -2,7 +2,7 @@ import { it, expect, describe, beforeAll } from "vitest";
 
 import makeListUserById from "./listUserById.js";
 import identity from "../../utils/id.js";
-import makeFakeUser from "../../__test__/fixtures/users.js";
+import { makeFakeUser } from "../../__test__/fixtures/users.js";
 
 let listUserById
 let usersDB
