@@ -2,8 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import identity from '../../utils/id.js';
 
-export default function makeFakeUser(overrides) {
-
+export function makeFakeUser(overrides) {
     const firstName = faker.person.firstName()
     const lastName = faker.person.lastName()
     const password = faker.internet.password({
@@ -19,7 +18,7 @@ export default function makeFakeUser(overrides) {
         userName: faker.internet.displayName({
             firstName: firstName,
             lastName: lastName
-        }), 
+        }),
         role: faker.helpers.arrayElement(['user', 'admin']),
         password,
         passwordConfirm: password,
@@ -33,6 +32,34 @@ export default function makeFakeUser(overrides) {
         type: 'newUser'
     }
 
+    return {
+        ...user,
+        ...overrides
+    }
+}
+
+export function makeFakeNewUser(overrides) {
+    const firstName = faker.person.firstName()
+    const lastName = faker.person.lastName()
+    const password = faker.internet.password({
+        length: 10
+    })
+
+    const user = {
+        id: identity.makeId(),
+        email: faker.internet.email({
+            firstName, lastName
+        }),
+        fullName: `${firstName} ${lastName}`,
+        userName: faker.internet.displayName({
+            firstName: firstName,
+            lastName: lastName
+        }),
+        role: faker.helpers.arrayElement(['user', 'admin']),
+        password,
+        passwordConfirm: password,
+        type: 'newUser'
+    }
     return {
         ...user,
         ...overrides
