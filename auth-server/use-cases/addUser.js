@@ -6,6 +6,9 @@ export default function makeAddUser({ usersDB, encrypt }) {
 
         const hashedPassword = await encrypt(user.getPassword())
 
+        const date = new Date()
+        date.setSeconds(0, 0)
+
         const newUser = await usersDB.insertUser({
             id: user.getId(),
             email: user.getEmail(),
@@ -14,13 +17,13 @@ export default function makeAddUser({ usersDB, encrypt }) {
             role: user.getRole(),
             password: hashedPassword,
             passwordConfirm: null,
-            passwordChangedAt: user.getPasswordChangedAt(),
-            passwordResetToken: user.getPasswordResetToken(),
-            passwordResetExpires: user.getPasswordResetExpires(),
-            favoriteRecipes: user.getFavoriteRecipes(),
-            createdAt: user.getCreatedAt(),
-            active: user.getActive(),
-            lastModified: user.getLastModified()
+            passwordChangedAt: null,
+            passwordResetToken: null,
+            passwordResetExpires: null,
+            favoriteRecipes: [],
+            createdAt: date,
+            active: true,
+            lastModified: date
         })
 
         return newUser
