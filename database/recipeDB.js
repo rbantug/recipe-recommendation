@@ -120,11 +120,28 @@ export default function makeRecipeDb({ recipesCollection }) {
         })
     }
 
+    async function deleteOneRecipe(query) {
+        // check if there are documents that fits the query
+        const documentCount = await recipesCollection.countDocuments(query)
+
+        if(documentCount === 0) {
+            throw new Error('This recipe does not exist')
+        }
+
+        if(documentCount > 1) {
+            throw new Error('This query is invalid')
+        }
+
+        await recipesCollection.deleteOne(query)
+        return 'recipe was deleted'
+    }
+
     return Object.freeze({
         findAll,
         findOneRecipe,
         insertManyRecipes,
         findRecipesBasedOnIngredients,
         updateIsFavorite,
+        deleteOneRecipe
     })
 }
