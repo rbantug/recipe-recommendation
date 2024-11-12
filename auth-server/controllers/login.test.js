@@ -35,6 +35,12 @@ describe('POST /login', () => {
 
             expect(response.body).toEqual(mockResponse)
         })
+
+        it('should respond with header["set-cookie"] that contains a jwt', () => {
+            const isToken = response.header['set-cookie'][0]
+
+            expect(isToken.startsWith('jwt')).toBe(true)
+        })
     })
 
     describe('given only a valid email in a development environment', async () => {
