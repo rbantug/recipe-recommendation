@@ -1,4 +1,4 @@
-export default function makeSignup({ addUser, signToken, passwordEncrypt, AppError }) {
+export default function makeSignup({ addUser, listUserByEmail, signToken }) {
     return async function signup(httpRequest) {
         const headers = {
             'Content-Type': 'application/json',
@@ -7,22 +7,21 @@ export default function makeSignup({ addUser, signToken, passwordEncrypt, AppErr
         try {
             const { email, fullName, userName, role, password, passwordConfirm } = httpRequest.body
 
-            if(password !== passwordConfirm) {
-                throw new AppError('The password and passwordConfirm are not the same', 400)
-            }
+            await addUser({ email, fullName, userName, role, password, passwordConfirm })
 
-            const hashPassword = await passwordEncrypt(password)
-            const insert = await addUser({ email, fullName, userName, role, password: hashPassword, passwordConfirm: null })
+            const getUser = await listUserByEmail(email)
 
-            const token = signToken({ userId: insert.insertedId })
+            const token = await signToken(getUser.id)
 
-            const cookies = [{
+            const cookie = [{
                 name: 'jwt',
                 payload: token,
                 options: {
                     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 3600000), // 2 hours
                     httpOnly: true,
                     secure: httpRequest.secure || httpRequest.headers['x-forwarded-proto'] === 'https',
+                    sameSite: 'Lax',
+                    path: '/api'
                 }
             }]
 
@@ -31,7 +30,14 @@ export default function makeSignup({ addUser, signToken, passwordEncrypt, AppErr
                 statusCode: 201,
                 status: 'success',
                 token,
-                cookies
+                cookie,
+                data: {
+                    email: getUser.email,
+                    fullName: getUser.fullName,
+                    userName: getUser.userName,
+                    role: getUser.role,
+                    favoriteRecipes: getUser.favoriteRecipes
+                }
             }
         } catch (error) {
             return {
