@@ -6,7 +6,7 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
 
         try {
             const { email, password, ...userInfo } = httpRequest.body
-            
+
             if (!email || !password) {
                 throw new AppError('Please provide email and password', 400)
             }
@@ -28,6 +28,8 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
                     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 3600000), // 2 hours
                     httpOnly: true,
                     secure: httpRequest.secure || httpRequest.headers['x-forwarded-proto'] === 'https',
+                    sameSite: 'Lax',
+                    path: '/api'
                 }
             }]
 
@@ -35,7 +37,6 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
                 headers,
                 statusCode: 200,
                 status: 'success',
-                token,
                 data: {
                     email: getUser.email,
                     fullName: getUser.fullName,
@@ -43,6 +44,7 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
                     role: getUser.role,
                     favoriteRecipes: getUser.favoriteRecipes
                 },
+                token,
                 cookie
             }
         } catch (error) {
