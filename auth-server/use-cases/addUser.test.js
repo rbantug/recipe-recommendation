@@ -3,6 +3,7 @@ import { it, describe, expect, beforeEach } from "vitest";
 import makeAddUser from "./addUser";
 import { makeFakeUser, makeFakeNewUser } from "../../__test__/fixtures/users";
 import passwordEncrypt from "../../utils/passwordEncryption";
+import identity from "../../utils/id";
 
 let usersDB
 let addUser
@@ -39,11 +40,14 @@ describe('addUser', () => {
 
         const getUser = await usersDB.findOneUser({ email: 'unbridledPotato@gmail.com' })
 
-        const { password, ...getUserWithoutPassword } = getUser 
+        const { password, id, ...getUserWithoutPasswordandId } = getUser 
 
         const comparePasswords = await passwordEncrypt.comparePassword(sampleData[0].password, getUser.password)
+        
+        const isId = identity.isValid(id)
 
-        expect(getUserWithoutPassword).toEqual(mockUser)
+        expect(getUserWithoutPasswordandId).toEqual(mockUser)
         expect(comparePasswords).toEqual(true)
+        expect(isId).toBe(true)
     })
 })
