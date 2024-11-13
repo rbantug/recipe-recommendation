@@ -46,7 +46,6 @@ export function makeFakeNewUser(overrides) {
     })
 
     const user = {
-        id: identity.makeId(),
         email: faker.internet.email({
             firstName, lastName
         }),
