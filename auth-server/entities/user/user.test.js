@@ -21,10 +21,12 @@ describe('user', () => {
         })
     })
 
-    it('must have an id that is not undefined', () => {
+    // Removed this test because property "id" now has a default value that automatically adds an id.
+
+    /* it('must have an id that is not undefined', () => {
         const userIsUndefined = makeFakeNewUser({ id: undefined })
         expect(() => makeUser(userIsUndefined)).toThrow(new Error('ValidationError: "id" is required'))
-    })
+    }) */
 
     it('must have an email in a valid format', () => {
         const wrongEmail = 'awdaddd).com/@bahl'
