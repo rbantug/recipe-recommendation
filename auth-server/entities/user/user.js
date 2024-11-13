@@ -5,10 +5,11 @@
  */
 
 function buildMakeUser({
-  joi
+  joi,
+  makeId
 }) {
   return function makeUser({
-    id,
+    id = makeId(),
     email,
     userName,
     fullName,
@@ -18,6 +19,8 @@ function buildMakeUser({
     type
   } = {}) {
     const newUserSchema = joi.object({
+      // TODO: remove id and then fix all the test in entity and use-case
+
       id: joi.string().length(24).required(),
       email: joi.string().email().required(),
       userName: joi.string().max(50).required(),
