@@ -35,12 +35,22 @@ export default function makeExpressCallback(controller, AppError) {
             )
           } 
   
-          if (httpResponse.status === 'success') {
+          if (httpResponse.status === 'success' && !httpResponse.token) {
+            res.status(httpResponse.statusCode).json({
+              headers: httpResponse.headers,
+              status: httpResponse.status,
+              data: httpResponse.data,
+              statusCode: httpResponse.statusCode
+            }); 
+          }
+
+          if (httpResponse.status === 'success' && httpResponse.token) {
             res.status(httpResponse.statusCode).json({
               headers: httpResponse.headers,
               status: httpResponse.status,
               data: httpResponse.data,
               statusCode: httpResponse.statusCode,
+              token: httpResponse.token
             });
           } else if (httpResponse.status === 'fail') {
             return next(new AppError(httpResponse.message, httpResponse.statusCode, httpResponse.headers))
