@@ -2,10 +2,13 @@ import { describe, expect, it } from "vitest";
 import request from "supertest"
 
 import Server from "../../server.js"
+import tokenUtil from "../../utils/token.js";
 
 process.env.JWT_SECRET = 'papaya'
 process.env.JWT_EXPIRES_IN = 600000
 process.env.JWT_COOKIE_EXPIRES_IN = 2
+
+const testUserId = 'tg4w5azvb2ckxmi3bv8gr7yk'
 
 describe('POST /login', () => {
     const { app } = new Server
@@ -19,7 +22,7 @@ describe('POST /login', () => {
             expect(response.statusCode).toBe(200)
         })
 
-        it('should respond with status: "success" and a json object in a particular format', () => {
+        it('should respond with status: "success" and a json object in a particular format', async () => {
             const mockResponse = {
                 headers: { 'Content-Type': 'application/json' },
                 status: 'success',
@@ -30,10 +33,14 @@ describe('POST /login', () => {
                     role: 'user',
                     favoriteRecipes: []
                 },
-                statusCode: 200
+                statusCode: 200,
             }
 
-            expect(response.body).toEqual(mockResponse)
+            const { token, ...responseBody } = response.body
+            const compareToken = await tokenUtil.verifyToken(token)
+
+            expect(responseBody).toEqual(mockResponse)
+            expect(compareToken.userId).toBe(testUserId)
         })
 
         it('should respond with header["set-cookie"] that contains a jwt', () => {
@@ -61,7 +68,7 @@ describe('POST /login', () => {
                 statusCode: 400,
                 message: 'Please provide email and password',
                 stack: 'Error: Please provide email and password\n' +
-                    '    at C:\\Users\\BANTUG\\Documents\\Javascript\\clean-architecture-template\\utils\\express-callback.js:46:25\n' +
+                    '    at C:\\Users\\BANTUG\\Documents\\Javascript\\clean-architecture-template\\utils\\express-callback.js:56:25\n' +
                     '    at processTicksAndRejections (node:internal/process/task_queues:105:5)'
             }
 
@@ -110,7 +117,7 @@ describe('POST /login', () => {
                 statusCode: 400,
                 message: 'Please provide email and password',
                 stack: 'Error: Please provide email and password\n' +
-                    '    at C:\\Users\\BANTUG\\Documents\\Javascript\\clean-architecture-template\\utils\\express-callback.js:46:25\n' +
+                    '    at C:\\Users\\BANTUG\\Documents\\Javascript\\clean-architecture-template\\utils\\express-callback.js:56:25\n' +
                     '    at processTicksAndRejections (node:internal/process/task_queues:105:5)'
             }
 
@@ -158,7 +165,7 @@ describe('POST /login', () => {
                 statusCode: 401,
                 message: 'Incorrect email or password',
                 stack: 'Error: Incorrect email or password\n' +
-                    '    at C:\\Users\\BANTUG\\Documents\\Javascript\\clean-architecture-template\\utils\\express-callback.js:46:25'
+                    '    at C:\\Users\\BANTUG\\Documents\\Javascript\\clean-architecture-template\\utils\\express-callback.js:56:25'
             }
 
             expect(response.body).toEqual(mockResponse)
