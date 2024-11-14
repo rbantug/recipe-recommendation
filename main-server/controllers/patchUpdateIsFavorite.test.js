@@ -3,6 +3,7 @@ import request from 'supertest';
 
 import Server from '../../server.js'
 import token from "../../utils/token.js";
+import { recipesDB } from "../../database/index.js";
 
 process.env.JWT_SECRET = 'papaya'
 process.env.JWT_EXPIRES_IN = 600000
@@ -57,6 +58,10 @@ describe('PATCH /:id', () => {
 
       expect(response.body).toEqual(mockResult)
     })
+
+    await recipesDB.deleteOneRecipe({ id: 'f9smrwidoda4rlswde7tjkwm' })
+
+    await recipesDB.insertManyRecipes([ sampleData ])
   })
 
   describe('given an invalid recipeId in a "development" environment', async () => {
