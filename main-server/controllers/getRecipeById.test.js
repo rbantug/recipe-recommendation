@@ -56,7 +56,6 @@ describe('GET /recipe-by-id/:id', () => {
         process.env.NODE_ENV = 'development'
         
         const response = await request(app).get('/api/v1/recipes/recipe-by-id/16weddfsefsdsdf322fef3gn')
-        console.log(response)
 
         it('should respond with status code 400', () => {
             expect(response.statusCode).toBe(400)
