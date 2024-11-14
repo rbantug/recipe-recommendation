@@ -10,6 +10,8 @@ const sampleData = [
     makeFakeUser({ id: 'mgcg0pocpwnjsdmvou3x6ip5' })
 ]
 
+sampleData.forEach(x => delete x.type)
+
 beforeEach(async () => {
     usersDB = globalThis.usersDB
     await usersDB.insertUser(sampleData[0])
@@ -60,13 +62,32 @@ describe('usersDB', () => {
         expect(update).toEqual(mockData)
     })
 
-    it('should throw an error if you try to update the "password", "confirmPassword" or "id" properties', async () => {
+    it('should update a user\'s password and passwordConfirm if user.type is "updatePassword"', async () => {
+        const date = new Date()
+        date.setSeconds(0, 0)
+
+        const update = await usersDB.updateUser('s6w8d9m4mo8xp7zlvhhgjk8g', {
+            password: '23498yihdsnf',
+            passwordConfirm: null,
+            type: 'updatePassword'
+        })
+        update.lastModified = date
+
+        const mockData = structuredClone(sampleData[1])
+        mockData.password = '23498yihdsnf'
+        mockData.passwordConfirm = null
+        mockData.lastModified = date
+
+        expect(update).toEqual(mockData)
+    })
+
+    it('should throw an error if you try to update the "password", "passwordConfirm" or "id" properties', async () => {
         const update1 = usersDB.updateUser('ipgnhryzbaqb6v4kaus71o33', {
             password: 'asdasdawd'
         })
 
         const update2 = usersDB.updateUser('ipgnhryzbaqb6v4kaus71o33', {
-            confirmPassword: 'asdasdawd'
+            passwordConfirm: 'asdasdawd'
         })
 
         const update3 = usersDB.updateUser('ipgnhryzbaqb6v4kaus71o33', {
