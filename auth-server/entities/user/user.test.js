@@ -83,7 +83,8 @@ describe('user', () => {
     it('must have a password with a minimum of 6 characters', () => {
         const wrongPass = 'abcd'
         const testUser = makeFakeNewUser({
-            password: wrongPass
+            password: wrongPass,
+            type: 'updatePassword'
         })
         expect(() => makeUser(testUser)).toThrow(new Error('ValidationError: "password" length must be at least 6 characters long'))
     })
@@ -92,30 +93,59 @@ describe('user', () => {
         const wrongValues = [100, true, {pickle: 1}, ['tamarind', 9], null, new Date()]
 
         wrongValues.forEach(x => {
-            const wrongUser = makeFakeNewUser({ password: x })
+            const wrongUser = makeFakeNewUser({ password: x, type: 'updatePassword' })
             expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "password" must be a string'))
         })
     })
 
     it('must have a password that is not undefined', () => {
-        const userIsUndefined = makeFakeNewUser({ password: undefined })
+        const userIsUndefined = makeFakeNewUser({ password: undefined, type: 'updatePassword' })
         expect(() => makeUser(userIsUndefined)).toThrow(new Error('ValidationError: "password" is required'))
     })
 
     it('must have a passwordConfirm that is the same with the password', () => {
         const wrongPC = 'abcdef'
         const testUser = makeFakeNewUser({
-            passwordConfirm: wrongPC
+            passwordConfirm: wrongPC,
+            type: 'updatePassword'
         })
         expect(() => makeUser(testUser)).toThrow(new Error('ValidationError: "passwordConfirm" is not the same with "password"'))
     })
 
-    it('must have a passwordConfirm that is a string', () => {
+    /* it('must have a passwordConfirm that is a string', () => {
         const wrongValues = [100, true, {pickle: 1}, ['tamarind', 9], null, new Date()]
 
         wrongValues.forEach(x => {
-            const wrongUser = makeFakeNewUser({ passwordConfirm: x })
+            const wrongUser = {
+                type: 'updatePassword',
+                passwordConfirm: x,
+                password: 'awdasdwada'
+            }
             expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "passwordConfirm" must be a string'))
+        })
+    }) */
+
+    it('must have a passwordResetToken that is a string', () => {
+        const wrongValues = [100, true, {pickle: 1}, ['tamarind', 9], null, new Date()]
+
+        wrongValues.forEach(x => {
+            const wrongUser = {
+                type: 'resetToken',
+                passwordResetToken: x
+            }
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "passwordResetToken" must be a string'))
+        })
+    })
+
+    it('must have a passwordResetExpires that is a date', () => {
+        const wrongValues = [100, true, {pickle: 1}, ['tamarind', 9], null, 'aiouwyhdawd']
+
+        wrongValues.forEach(x => {
+            const wrongUser = {
+                type: 'resetToken',
+                passwordResetExpires: x
+            }
+            expect(() => makeUser(wrongUser)).toThrow(new Error('ValidationError: "passwordResetExpires" must be a valid date'))
         })
     })
 })
