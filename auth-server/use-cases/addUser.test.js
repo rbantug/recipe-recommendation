@@ -1,8 +1,7 @@
 import { it, describe, expect, beforeEach } from "vitest";
 
 import makeAddUser from "./addUser";
-import { makeFakeUser, makeFakeNewUser } from "../../__test__/fixtures/users";
-import passwordEncrypt from "../../utils/passwordEncryption";
+import { makeFakeNewUser } from "../../__test__/fixtures/users";
 import identity from "../../utils/id";
 
 let usersDB
@@ -10,7 +9,7 @@ let addUser
 
 beforeEach(() => {
     usersDB = globalThis.usersDB
-    addUser = makeAddUser({ usersDB, encrypt: passwordEncrypt.encryptPassword })
+    addUser = makeAddUser({ usersDB, encrypt: () => 'abcdefg' })
 })
 
 describe('addUser', () => {
@@ -27,6 +26,7 @@ describe('addUser', () => {
         date.setSeconds(0, 0)
 
         const mockUser = structuredClone(sampleData[0])
+        mockUser.password = 'abcdefg'
         mockUser.passwordConfirm = null
         mockUser.passwordChangedAt = null
         mockUser.passwordResetToken = null
@@ -35,19 +35,15 @@ describe('addUser', () => {
         mockUser.createdAt = date
         mockUser.active = true
         mockUser.lastModified = date
-        delete mockUser.password
         delete mockUser.type
 
         const getUser = await usersDB.findOneUser({ email: 'unbridledPotato@gmail.com' })
 
-        const { password, id, ...getUserWithoutPasswordandId } = getUser 
-
-        const comparePasswords = await passwordEncrypt.comparePassword(sampleData[0].password, getUser.password)
+        const { id, ...getUserWithoutId } = getUser 
         
         const isId = identity.isValid(id)
 
-        expect(getUserWithoutPasswordandId).toEqual(mockUser)
-        expect(comparePasswords).toEqual(true)
+        expect(getUserWithoutId).toEqual(mockUser)
         expect(isId).toBe(true)
     })
 })

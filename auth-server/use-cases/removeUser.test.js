@@ -4,7 +4,6 @@ import makeRemoveUser from "./removeUser.js";
 import { makeFakeNewUser } from "../../__test__/fixtures/users.js";
 import makeAddUser from "./addUser";
 import makeListUsers from "./listUsers";
-import passwordEncrypt from "../../utils/passwordEncryption.js";
 
 let usersDB
 let removeUser
@@ -22,7 +21,7 @@ beforeAll(async () => {
     removeUser = makeRemoveUser({ usersDB })
     addUser = makeAddUser({
         usersDB,
-        encrypt: passwordEncrypt.encryptPassword
+        encrypt: () => 'hotpot'
     })
     listUsers = makeListUsers({ usersDB })
 })

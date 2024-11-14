@@ -2,8 +2,7 @@ import { it, describe, expect, beforeAll } from "vitest";
 
 import makeEditPassword from "./editPassword.js";
 import makeAddUser from "./addUser";
-import passwordEncrypt from "../../utils/passwordEncryption";
-import { makeFakeUser, makeFakeNewUser } from "../../__test__/fixtures/users";
+import { makeFakeNewUser } from "../../__test__/fixtures/users";
 
 let editPassword
 let addUser
@@ -19,11 +18,11 @@ beforeAll(async () => {
     usersDB = globalThis.usersDB
     editPassword = makeEditPassword({
         usersDB,
-        encrypt: passwordEncrypt.encryptPassword
+        encrypt: () => 'hotpot'
     })
     addUser = makeAddUser({
         usersDB,
-        encrypt: passwordEncrypt.encryptPassword
+        encrypt: () => 'claypot'
     })
 
     await Promise.all(sampleData.map(addUser))
@@ -36,15 +35,16 @@ describe('editPassword', () => {
             passwordConfirm: 'iawdhnawdaw12',
         }
 
-        const update = await editPassword({ userInfo, userId: sampleData[2].id })
-
-        const { password, ...updatedUserWithoutPassword } = update
+        const updatedUser = await editPassword({ userInfo, userId: sampleData[2].id })
 
         const date = new Date()
         date.setSeconds(0,0)
 
+        const sampleData2Clone = structuredClone(sampleData[2])
+
         const mockUser = {
-            ...sampleData[2],
+            ...sampleData2Clone,
+            password: 'hotpot',
             passwordChangedAt: date,
             passwordConfirm: null,
             lastModified: date,
@@ -54,10 +54,8 @@ describe('editPassword', () => {
             passwordResetExpires: null,
             passwordResetToken: null
         }
-        delete mockUser.password
         delete mockUser.type
 
-        expect(updatedUserWithoutPassword).toEqual(mockUser)
-        expect(passwordEncrypt.comparePassword(userInfo.password, password)).resolves.toBe(true)
+        expect(updatedUser).toEqual(mockUser)
     })
 })

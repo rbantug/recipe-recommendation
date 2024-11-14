@@ -1,6 +1,5 @@
 import { it, expect, describe, beforeEach } from "vitest";
 
-import identity from "../../utils/id.js";
 import makeUpdateIsFavorite from "./updateIsFavorite";
 import makeFakeRecipe from "../../__test__/fixtures/recipes";
 
@@ -11,13 +10,13 @@ const sampleData = [
 ]
 
 beforeEach(async () => {
-    updateIsFavorite = makeUpdateIsFavorite({ recipesDB: globalThis.recipesDB, isValid: identity.isValid })
-
     await globalThis.recipesDB.insertManyRecipes(sampleData)
 })
 
 describe('updateIsFavorite', () => {
     it('should accept valid object ids', () => {
+        updateIsFavorite = makeUpdateIsFavorite({ recipesDB: globalThis.recipesDB, isValid: () => false })
+
         const testRecipeId = '12asopduajdw'
 
         const sampleUserId = 'wxoa04yer8fwzgetrchjm3ie'
@@ -28,6 +27,8 @@ describe('updateIsFavorite', () => {
     })
 
     it('should update the recipe', async () => {
+        updateIsFavorite = makeUpdateIsFavorite({ recipesDB: globalThis.recipesDB, isValid: () => true })
+
         const sampleUserId = 'wxoa04yer8fwzgetrchjm3ie'
 
         const getIsFavorite = sampleData[0].isFavorite
