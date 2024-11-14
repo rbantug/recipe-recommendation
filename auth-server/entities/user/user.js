@@ -16,6 +16,8 @@ function buildMakeUser({
     role,
     password,
     passwordConfirm,
+    passwordResetToken,
+    passwordResetExpires,
     type
   } = {}) {
     const newUserSchema = joi.object({
@@ -45,10 +47,17 @@ function buildMakeUser({
       type: 'updatePassword'
     })
 
+    const updateResetToken = joi.object({
+      passwordResetToken: joi.string(),
+      passwordResetExpires: joi.date(),
+      type: 'resetToken'
+    })
+
     const conditionalSchema = joi.any().when('.type', {
       switch: [
         { is: 'newUser', then: newUserSchema },
-        { is: 'updatePassword', then: updatePasswordSchema }
+        { is: 'updatePassword', then: updatePasswordSchema },
+        { is: 'resetToken', then: updateResetToken },
       ]
     })  
 
@@ -75,6 +84,20 @@ function buildMakeUser({
         const { error, value } = conditionalSchema.validate({
           password,
           passwordConfirm,
+          type
+        }, { convert: false })
+    
+        if (error) {
+          throw new Error(error);
+        }
+        
+      }
+
+      if (type === 'resetToken') {
+
+        const { error, value } = conditionalSchema.validate({
+          passwordResetToken,
+          passwordResetExpires,
           type
         }, { convert: false })
     
