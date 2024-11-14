@@ -60,7 +60,7 @@ export default function makeUserDb({ usersCollection }) {
         if(userInfo.type !== 'updatePassword' || userInfo.id) {
             const props = Object.keys(userInfo)
             for (let x of props) {
-                if(x === 'password' || x === 'confirmPassword' || x === 'id') {
+                if(x === 'password' || x === 'passwordConfirm' || x === 'id') {
                     throw new Error('You can\'t change these properties')
                 }
             }
