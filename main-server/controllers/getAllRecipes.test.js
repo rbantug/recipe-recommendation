@@ -33,6 +33,8 @@ describe('GET /', () => {
 
     // This is a unit test because the only way to throw an error is if something happened to the database
     describe('throws an error', async () => {
+        process.env.NODE_ENV = 'development'
+
         const getAllRecipes = makeGetAllRecipes(() => {
             throw Error('test error')
         })
