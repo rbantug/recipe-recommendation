@@ -21,8 +21,6 @@ function buildMakeUser({
     type
   } = {}) {
     const newUserSchema = joi.object({
-      // TODO: remove id and then fix all the test in entity and use-case
-
       id: joi.string().length(24).required(),
       email: joi.string().email().required(),
       userName: joi.string().max(50).required(),
@@ -49,7 +47,7 @@ function buildMakeUser({
 
     const updateResetToken = joi.object({
       passwordResetToken: joi.string(),
-      passwordResetExpires: joi.date(),
+      passwordResetExpires: joi.date().timestamp('javascript'),
       type: 'resetToken'
     })
 
@@ -115,7 +113,9 @@ function buildMakeUser({
         getRole: () => role,
         getPassword: () => password,
         getPasswordConfirm: () => passwordConfirm,
-        getType: () => type
+        getType: () => type,
+        getPasswordResetToken: () => passwordResetToken,
+        getPasswordResetExpires: () => passwordResetExpires
       });
     };
   }
