@@ -7,6 +7,7 @@ import makeListUserByEmail from "./listUserByEmail.js"
 import makeSignToken from './signToken.js';
 import makeEditPassword from './editPassword.js'
 import makeRemoveUser from './removeUser.js';
+import makeEditPasswordResetTokenAndExpires from "./editPasswordResetTokenAndExpires.js";
 
 import { usersDB } from "../../database/index.js"
 import identity from "../../utils/id.js";
@@ -21,6 +22,7 @@ const listUserByEmail = makeListUserByEmail({ usersDB, checkEmail: validators.ch
 const signToken = makeSignToken({ createToken: token.signToken })
 const editPassword = makeEditPassword({ usersDB, encrypt: passwordEncrypt.encryptPassword })
 const removeUser = makeRemoveUser({ usersDB })
+const editPasswordResetTokenAndExpires = makeEditPasswordResetTokenAndExpires({ usersDB })
 
 const userService = Object.freeze({
     addUser,
@@ -29,6 +31,7 @@ const userService = Object.freeze({
     listUserByEmail,
     signToken,
     editPassword,
+    editPasswordResetTokenAndExpires,
     removeUser
 })
 
