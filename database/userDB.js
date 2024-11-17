@@ -23,7 +23,7 @@ export default function makeUserDb({ usersCollection }) {
     async function findOneUser(query) {
         const documentCount = await usersCollection.countDocuments(query)
 
-        if(documentCount === 0) {
+        if (documentCount === 0) {
             throw new Error('The user does not exist')
         }
 
@@ -52,17 +52,29 @@ export default function makeUserDb({ usersCollection }) {
             id: userId
         })
 
-        if(documentCount === 0) {
+        if (documentCount === 0) {
             throw new Error('The user does not exist')
         }
-        // check if userInfo to be updated contains "password", "confirmPassword" or "id" properties
 
-        if(userInfo.type !== 'updatePassword' || userInfo.id) {
+        // "passwordResetToken" & "passwordResetExpires" properties should be updated if userInfo.type is "resetToken"
+        
+        if (userInfo.type === 'resetToken') {
+            delete userInfo.type
             const props = Object.keys(userInfo)
-            for (let x of props) {
-                if(x === 'password' || x === 'passwordConfirm' || x === 'id') {
-                    throw new Error('You can\'t change these properties')
-                }
+            const isValid = props.every(x => x === 'passwordResetToken' || x === 'passwordResetExpires')
+            if (!isValid) {
+                throw new Error('You can only change properties that are related to resetting the token')
+            }
+        }
+
+        // "password" and "confirmPassword" should be updated if userInfo.type is "updatePassword". 
+        // You also can't update the "id".
+
+        if (userInfo.type !== 'updatePassword' || userInfo.id) {
+            const props = Object.keys(userInfo)
+            const isValid = props.every(x => x === 'password' || x === 'passwordConfirm' || x === 'id')
+            if (isValid) {
+                throw new Error('You can\'t change these properties')
             }
         }
 
@@ -70,7 +82,7 @@ export default function makeUserDb({ usersCollection }) {
 
         const query = { id: userId }
         const d = new Date()
-        d.setSeconds(0,0)
+        d.setSeconds(0, 0)
         const update = {
             $set: {
                 ...userInfo,
@@ -96,11 +108,11 @@ export default function makeUserDb({ usersCollection }) {
         // check if there are documents that fits the query
         const documentCount = await usersCollection.countDocuments(query)
 
-        if(documentCount === 0) {
+        if (documentCount === 0) {
             throw new Error('This user does not exist')
         }
 
-        if(documentCount > 1) {
+        if (documentCount > 1) {
             throw new Error('This query is invalid')
         }
 
