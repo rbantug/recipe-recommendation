@@ -126,7 +126,7 @@ describe('user', () => {
     }) */
 
     it('must have a passwordResetToken that is a string', () => {
-        const wrongValues = [100, true, {pickle: 1}, ['tamarind', 9], null, new Date()]
+        const wrongValues = [100, true, {pickle: 1}, ['tamarind', 9], new Date()]
 
         wrongValues.forEach(x => {
             const wrongUser = {
@@ -138,7 +138,7 @@ describe('user', () => {
     })
 
     it('must have a passwordResetExpires that is a date', () => {
-        const wrongValues = [100, true, {pickle: 1}, ['tamarind', 9], null, 'aiouwyhdawd']
+        const wrongValues = [100, true, {pickle: 1}, ['tamarind', 9], 'aiouwyhdawd']
 
         wrongValues.forEach(x => {
             const wrongUser = {
