@@ -46,8 +46,8 @@ function buildMakeUser({
     })
 
     const updateResetToken = joi.object({
-      passwordResetToken: joi.string(),
-      passwordResetExpires: joi.date().timestamp('javascript'),
+      passwordResetToken: joi.string().allow(null),
+      passwordResetExpires: joi.date().timestamp('javascript').allow(null),
       type: 'resetToken'
     })
 
