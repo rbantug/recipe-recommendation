@@ -31,8 +31,6 @@ beforeAll(async () => {
     usersDB = globalThis.usersDB
     addUser = makeAddUser({ usersDB, encrypt: () => 'drumstick' })
     editPasswordResetTokenAndExpires = makeEditPasswordResetTokenAndExpires({ usersDB, crypto })
-
-    await Promise.all(sampleData.map(addUser))
 })
 
 afterAll(() => {
@@ -41,10 +39,12 @@ afterAll(() => {
 
 describe('editPasswordResetTokenAndExpires', () => {
 
-    describe('given a valid passwordResetToken, passwordResetExpires and userId', () => {
+    describe('given a valid passwordResetToken, passwordResetExpires and userId with createToken being true', () => {
 
-        it('should return a user with an updated the passwordResetToken and passwordResetExpires', async () => {
-            const updateUser = await editPasswordResetTokenAndExpires({ userId: 'xows2mm7za9s612368iqzww7' })
+        it('should return a user updated with the valid passwordResetToken and passwordResetExpires', async () => {
+            await addUser(sampleData[1])
+
+            const { resetToken, updatedUser } = await editPasswordResetTokenAndExpires({ userId: 'xows2mm7za9s612368iqzww7', createToken: true })
 
             const date = new Date()
             date.setSeconds(0, 0)
@@ -67,7 +67,38 @@ describe('editPasswordResetTokenAndExpires', () => {
             }
             delete mockData.type
 
-            expect(updateUser).toEqual(mockData)
+            expect(updatedUser).toEqual(mockData)
+            expect(resetToken).toBe('test')
+        })
+    })
+
+    describe('given a valid passwordResetToken, passwordResetExpires and userId with createToken being false', () => {
+
+        it('should return a user with the passwordResetToken and passwordResetExpires as null', async () => {
+            await addUser(sampleData[2])
+
+            const { resetToken, updatedUser } = await editPasswordResetTokenAndExpires({ userId: 'rlduhwu9id93b3d86woj5sdd', createToken: false })
+
+            const date = new Date()
+            date.setSeconds(0, 0)
+
+            const mockData = {
+                ...sampleData[2],
+                id: 'rlduhwu9id93b3d86woj5sdd',
+                password: 'drumstick',
+                passwordConfirm: null,
+                passwordChangedAt: null,
+                passwordResetToken: null,
+                passwordResetExpires: null,
+                favoriteRecipes: [],
+                createdAt: date,
+                active: true,
+                lastModified: date
+            }
+            delete mockData.type
+
+            expect(updatedUser).toEqual(mockData)
+            expect(resetToken).toBe('reset token and expiry date were reverted back to null')
         })
     })
 })
