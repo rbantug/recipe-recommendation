@@ -21,7 +21,9 @@ export default function makeExpressCallback(controller, AppError) {
           ...req.headers
         },
         user: req.user,
-        secure: req.secure
+        secure: req.secure,
+        protocol: req.protocol,
+        host: req.get('host')
       };
 
       controller(httpRequest)
@@ -40,7 +42,8 @@ export default function makeExpressCallback(controller, AppError) {
               headers: httpResponse.headers,
               status: httpResponse.status,
               data: httpResponse.data,
-              statusCode: httpResponse.statusCode
+              statusCode: httpResponse.statusCode,
+              message: httpResponse.message
             }); 
           }
 
