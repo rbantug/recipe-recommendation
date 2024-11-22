@@ -1,4 +1,4 @@
-//import joi from 'joi'
+import crypto from 'crypto'
 
 import makeAddUser from "./addUser.js";
 import makeListUsers from "./listUsers.js";
@@ -22,7 +22,7 @@ const listUserByEmail = makeListUserByEmail({ usersDB, checkEmail: validators.ch
 const signToken = makeSignToken({ createToken: token.signToken })
 const editPassword = makeEditPassword({ usersDB, encrypt: passwordEncrypt.encryptPassword })
 const removeUser = makeRemoveUser({ usersDB })
-const editPasswordResetTokenAndExpires = makeEditPasswordResetTokenAndExpires({ usersDB })
+const editPasswordResetTokenAndExpires = makeEditPasswordResetTokenAndExpires({ usersDB, crypto })
 
 const userService = Object.freeze({
     addUser,
