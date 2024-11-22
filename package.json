@@ -10,20 +10,25 @@
     "unit-test": "vitest run entities/ database/ use-cases/",
     "doc": "jsdoc -c ./jsdoc.json",
     "test-docker": "sh ./scripts/init-mongo-test.sh"
-
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "express-mongo-sanitize": "^2.2.0",
     "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mailtrap": "^3.4.0",
     "mongodb": "^6.9.0",
+    "nodemailer": "^6.9.16",
+    "validator": "^13.12.0",
     "valkey": "^0.0.3"
   },
   "devDependencies": {
@@ -36,6 +41,7 @@
     "jsdoc": "^4.0.3",
     "mongodb-memory-server": "^10.0.0",
     "morgan": "^1.10.0",
+    "nock": "^13.5.6",
     "nodemon": "^3.1.4",
     "supertest": "^7.0.0",
     "vitest": "^2.1.1"
