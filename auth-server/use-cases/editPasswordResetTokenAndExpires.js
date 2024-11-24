@@ -10,7 +10,7 @@ export default function makeEditPasswordResetTokenAndExpires({ usersDB, crypto }
                 .createHash('sha256')
                 .update(resetToken)
                 .digest('hex')
-            passwordResetExpires = new Date(Date.now() + 600000)
+            passwordResetExpires = new Date(Date.now() + 600000) // 10 minutes
             passwordResetExpires.setSeconds(0,0)
         } else {
             resetToken = 'reset token and expiry date were reverted back to null'
