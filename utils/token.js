@@ -44,9 +44,28 @@ async function verifyToken(token) {
     }
 }
 
+async function sendToken(userId, secure, headers, protocol) {
+    const token = await signToken(userId)
+
+    const cookie = [{
+        name: 'jwt',
+        payload: token,
+        options: {
+            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 3600000), // 2 hours
+            httpOnly: true,
+            secure: secure || headers['x-forwarded-proto'] === 'https' || protocol === 'https:',
+            sameSite: 'Lax',
+            path: '/api'
+        }
+    }]
+
+    return { cookie, token }
+}
+
 const token = Object.freeze({
     signToken,
-    verifyToken
+    verifyToken,
+    sendToken
 })
 
 export default token
