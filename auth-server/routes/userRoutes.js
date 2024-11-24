@@ -9,6 +9,7 @@ const userRouter = express.Router()
 userRouter.post('/login', makeExpressCallback(userController.login, AppError))
 userRouter.post('/signup', makeExpressCallback(userController.signup, AppError))
 userRouter.patch('/forgotPassword', makeExpressCallback(userController.patchForgetPassword, AppError))
+userRouter.patch('/resetPassword/:token', makeExpressCallback(userController.patchResetPassword, AppError))
 
 
 export default userRouter
