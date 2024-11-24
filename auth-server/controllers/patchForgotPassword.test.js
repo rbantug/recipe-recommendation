@@ -10,15 +10,15 @@ const invalidMockRequest = { message: 'not authorized' }
 
 function runNock(statusCode, response) {
     nock('https://sandbox.api.mailtrap.io')
-    .post('/api/send/3283668')
-    .reply(statusCode, response)
+        .post('/api/send/3283668')
+        .reply(statusCode, response)
 }
-
-runNock(200, validMockResponse)
-runNock(400, invalidMockRequest)
 
 describe('patchForgetPassword', () => {
     const { app } = new Server
+
+    runNock(200, validMockResponse)
+    runNock(500, invalidMockRequest)
 
     describe('given the user forgots their password', async () => {
         process.env.MAILTRAP_TOKEN = 'ae8a9c80d085bf25db788226d34c88a1' // test email token
@@ -65,7 +65,7 @@ describe('patchForgetPassword', () => {
                 status: 'error',
                 statusCode: 500,
                 message: "There was an error sending the email. Please try again.",
-        }
+            }
             delete response.body.stack
 
             expect(response.body).toEqual(mockRespose)
@@ -77,5 +77,5 @@ describe('patchForgetPassword', () => {
             expect(getUser.passwordResetToken).toBeNull()
             expect(getUser.passwordResetExpires).toBeNull()
         })
-})
+    })
 })
