@@ -1,4 +1,4 @@
-export default function makeLogin({ listUserByEmail, passwordCompare, signToken, AppError }) {
+export default function makeLogin({ listUserByEmail, passwordCompare, sendToken, AppError }) {
     return async function login(httpRequest) {
         const headers = {
             'Content-Type': 'application/json',
@@ -19,19 +19,7 @@ export default function makeLogin({ listUserByEmail, passwordCompare, signToken,
                 throw new AppError('Incorrect email or password', 401)
             }
 
-            const token = await signToken(getUser.id)
-
-            const cookie = [{
-                name: 'jwt',
-                payload: token,
-                options: {
-                    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 3600000), // 2 hours
-                    httpOnly: true,
-                    secure: httpRequest.secure || httpRequest.headers['x-forwarded-proto'] === 'https',
-                    sameSite: 'Lax',
-                    path: '/api'
-                }
-            }]
+            const { token, cookie } = await sendToken(getUser.id, httpRequest.secure, httpRequest.headers, httpRequest.protocol)
 
             return {
                 headers,
