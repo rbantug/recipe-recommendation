@@ -57,6 +57,8 @@ describe('POST /login', () => {
             .post('/api/v1/users/login')
             .send({ email: 'Roderick.Kub@gmail.com', password: null })
 
+        delete response.body.stack
+
         it('should return a status code of 400', () => {
             expect(response.statusCode).toBe(400)
         })
@@ -67,9 +69,6 @@ describe('POST /login', () => {
                 status: 'fail',
                 statusCode: 400,
                 message: 'Please provide email and password',
-                stack: 'Error: Please provide email and password\n' +
-                    '    at C:\\Users\\BANTUG\\Documents\\Javascript\\clean-architecture-template\\utils\\express-callback.js:59:25\n' +
-                    '    at processTicksAndRejections (node:internal/process/task_queues:105:5)'
             }
 
             expect(response.body).toEqual(mockResponse)
@@ -105,6 +104,8 @@ describe('POST /login', () => {
         const response = await request(app)
             .post('/api/v1/users/login')
             .send({ email: null, password: 'aidyhaiwawd' })
+        
+        delete response.body.stack
 
         it('should return a status code of 400', () => {
             expect(response.statusCode).toBe(400)
@@ -115,10 +116,7 @@ describe('POST /login', () => {
                 headers: { 'Content-Type': 'application/json' },
                 status: 'fail',
                 statusCode: 400,
-                message: 'Please provide email and password',
-                stack: 'Error: Please provide email and password\n' +
-                    '    at C:\\Users\\BANTUG\\Documents\\Javascript\\clean-architecture-template\\utils\\express-callback.js:59:25\n' +
-                    '    at processTicksAndRejections (node:internal/process/task_queues:105:5)'
+                message: 'Please provide email and password'
             }
 
             expect(response.body).toEqual(mockResponse)
@@ -154,6 +152,8 @@ describe('POST /login', () => {
             .post('/api/v1/users/login')
             .send({ email: 'Roderick.Kub@gmail.com', password: 'aidyhaiwawd' })
 
+        delete response.body.stack
+
         it('should respond with status code 401', () => {
             expect(response.statusCode).toBe(401)
         })
@@ -163,9 +163,7 @@ describe('POST /login', () => {
                 headers: { 'Content-Type': 'application/json' },
                 status: 'fail',
                 statusCode: 401,
-                message: 'Incorrect email or password',
-                stack: 'Error: Incorrect email or password\n' +
-                    '    at C:\\Users\\BANTUG\\Documents\\Javascript\\clean-architecture-template\\utils\\express-callback.js:59:25'
+                message: 'Incorrect email or password'
             }
 
             expect(response.body).toEqual(mockResponse)
