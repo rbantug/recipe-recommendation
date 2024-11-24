@@ -8,6 +8,7 @@ import makeSignToken from './signToken.js';
 import makeEditPassword from './editPassword.js'
 import makeRemoveUser from './removeUser.js';
 import makeEditPasswordResetTokenAndExpires from "./editPasswordResetTokenAndExpires.js";
+import makeListUserByResetToken from './listUserByResetToken.js'
 
 import { usersDB } from "../../database/index.js"
 import identity from "../../utils/id.js";
@@ -23,6 +24,7 @@ const signToken = makeSignToken({ createToken: token.signToken })
 const editPassword = makeEditPassword({ usersDB, encrypt: passwordEncrypt.encryptPassword })
 const removeUser = makeRemoveUser({ usersDB })
 const editPasswordResetTokenAndExpires = makeEditPasswordResetTokenAndExpires({ usersDB, crypto })
+const listUserByResetToken = makeListUserByResetToken({ usersDB })
 
 const userService = Object.freeze({
     addUser,
@@ -32,7 +34,8 @@ const userService = Object.freeze({
     signToken,
     editPassword,
     editPasswordResetTokenAndExpires,
-    removeUser
+    removeUser,
+    listUserByResetToken
 })
 
 export default userService;
