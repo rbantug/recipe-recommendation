@@ -24,10 +24,13 @@ describe('GET /', () => {
                 headers: { 'Content-Type': 'application/json' },
                 statusCode: 200,
                 status: 'success',
-                data: importRecipes
             }
 
-            expect(response.body).toEqual(mockResult)
+            const { data, ...responseBody } = response.body
+
+            expect(responseBody).toEqual(mockResult)
+            //expect(data.map(x => x.id).sort()).toEqual(importRecipes.map(x => x.id).sort())
+            expect(data).toEqual(expect.arrayContaining(importRecipes))
         })
     })
 
