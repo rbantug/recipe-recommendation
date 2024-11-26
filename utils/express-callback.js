@@ -48,11 +48,30 @@ export default function makeExpressCallback(controller, AppError) {
             }); 
           }
 
-          if (httpResponse.status === 'fail') {
+          /* if (httpResponse.status === 'fail') {
             return next(new AppError(httpResponse.message, httpResponse.statusCode, httpResponse.headers))
+          } */
+
+          if (httpResponse.status === 'fail' && process.env.NODE_ENV === 'development') {
+            res.status(httpResponse.statusCode).json({
+              headers: httpResponse.headers,
+              status: httpResponse.status,
+              statusCode: httpResponse.statusCode || 400,
+              message: httpResponse.message,
+              stack: httpResponse.stack
+            })
+          }
+
+          if (httpResponse.status === 'fail' && process.env.NODE_ENV === 'production') {
+            res.status(httpResponse.statusCode).json({
+              headers: httpResponse.headers,
+              status: httpResponse.status,
+              statusCode: httpResponse.statusCode || 400,
+              message: httpResponse.message
+            })
           }
         })
-        .catch(err => next(new AppError(err.message, 500, httpResponse.headers)))
+        .catch(e => res.status(500).send({ error: 'An unknown error occurred.' }))
     };
   }
   
