@@ -62,7 +62,7 @@ describe('patchForgetPassword', () => {
         it('should respond with status "fail" and a json object in a particular format', () => {
             const mockRespose = {
                 headers: { 'Content-Type': 'application/json' },
-                status: 'error',
+                status: 'fail',
                 statusCode: 500,
                 message: "There was an error sending the email. Please try again.",
             }
