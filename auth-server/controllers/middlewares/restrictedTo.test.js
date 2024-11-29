@@ -10,7 +10,7 @@ process.env.JWT_EXPIRES_IN = 600000
 // This user has the role of "admin". Look for importUsers.json for more info.
 const userId = '6ma364gdcnv6q9ueidp2do1y'
 
-const testToken = await token.signToken({ userId })
+const testToken = await token.signToken(userId)
 
 describe('restrictedTo middleware', () => {
     const { app } = new Server
