@@ -52,7 +52,8 @@ export default function makePatchResetPassword({ listUserByResetToken, editPassw
                 headers,
                 status: 'fail',
                 statusCode: error.statusCode,
-                message: error.message
+                message: error.message,
+                stack: error.stack
             }
         }
     }

@@ -32,7 +32,8 @@ export default function makeSignup({ addUser, listUserByEmail, sendToken }) {
                 headers,
                 status: 'fail',
                 statusCode: error.statusCode,
-                message: error.message
+                message: error.message,
+                stack: error.stack
             }
         }
     }

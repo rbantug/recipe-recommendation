@@ -46,7 +46,8 @@ export default function makePatchForgotPassword({ listUserByEmail, editPasswordR
                 headers,
                 status: 'fail',
                 message: error.message,
-                statusCode: error.statusCode
+                statusCode: error.statusCode || 400,
+                stack: error.stack
             }
         }
     }

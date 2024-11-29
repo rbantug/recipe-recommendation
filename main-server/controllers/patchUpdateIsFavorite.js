@@ -20,7 +20,8 @@ export default function makePatchUpdateIsFavorite({ updateIsFavorite }) {
                 headers,
                 statusCode: 400,
                 status: 'fail',
-                message: error.message
+                message: error.message,
+                stack: error.stack
             }
         }
     }
