@@ -192,4 +192,27 @@ describe('POST /login', () => {
             expect(response.body).toEqual(mockResponse)
         })
     })
+
+    describe('given an invalid email address and a password', async () => {
+        process.env.NODE_ENV = 'production'
+
+        const response = await request(app)
+            .post('/api/v1/users/login')
+            .send({ email: 'Roderick.is.here@gmail.com', password: 'aidyhaiwawd' })
+
+        it('should respond with status code 404', () => {
+            expect(response.statusCode).toBe(404)
+        })
+
+        it('should respond with status "fail" and a json object in a particular format', () => {
+            const mockResponse = {
+                headers: { 'Content-Type': 'application/json' },
+                status: 'fail',
+                statusCode: 404,
+                message: 'The user does not exist',
+            }
+
+            expect(response.body).toEqual(mockResponse)
+        })
+    })
 })
