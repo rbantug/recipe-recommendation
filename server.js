@@ -34,7 +34,7 @@ class Server {
   }
 
   errorHandling() {
-    //this.app.use(expressGlobalErrorHandling)
+    this.app.use(expressGlobalErrorHandling)
     process.on('uncaughtException', (err) => {
       console.log('Unhandled Exception. Shutting Down...')
       console.log(err.name, err.message);
