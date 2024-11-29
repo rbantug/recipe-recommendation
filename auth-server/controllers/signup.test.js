@@ -13,6 +13,8 @@ describe('POST /signup', () => {
     const { app } = new Server
 
     describe('given a valid user info', async () => {
+        process.env.NODE_ENV = 'development'
+
         const response = await request(app)
             .post('/api/v1/users/signup')
             .send({
@@ -55,6 +57,37 @@ describe('POST /signup', () => {
             const isToken = response.header['set-cookie'][0]
 
             expect(isToken.startsWith('jwt')).toBe(true)
+        })
+    })
+
+    describe('given a user info with the wrong email', async () => {
+
+        process.env.NODE_ENV = 'production'
+
+        const response = await request(app)
+            .post('/api/v1/users/signup')
+            .send({
+                email: 'book@.comujaghwd@/.',
+                fullName: 'Full Book',
+                userName: 'melting_book',
+                role: 'user',
+                password: '12ascvfg',
+                passwordConfirm: '12ascvfg',
+            })
+
+        it('should respond with status code 400', () => {
+            expect(response.statusCode).toBe(400)
+        })
+
+        it('should respond with status: "fail" and a json object in a particular format ', () => {
+            const mockResponse = {
+                headers: { 'Content-Type': 'application/json' },
+                status: 'fail',
+                statusCode: 400,
+                message: 'Invalid input data: "email" must be a valid email'
+            }
+
+            expect(response.body).toEqual(mockResponse)
         })
     })
 })
