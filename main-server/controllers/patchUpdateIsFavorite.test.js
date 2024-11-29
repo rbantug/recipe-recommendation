@@ -10,7 +10,7 @@ process.env.JWT_EXPIRES_IN = 600000
 
 const userId = 'ttvwv2pikps7f6ihm38cc3yw'
 
-const testToken = await token.signToken({ userId })
+const testToken = await token.signToken(userId)
 
 const sampleData = {
   "id": "f9smrwidoda4rlswde7tjkwm",
@@ -96,14 +96,14 @@ describe('PATCH /:id', () => {
     .set('Accept-Language', 'en')
     .set('authorization', [`Bearer ${testToken}`])
 
-    it('should respond with status 400', () => {
-      expect(response.statusCode).toBe(400)
+    it('should respond with status 404', () => {
+      expect(response.statusCode).toBe(404)
     })
 
     it('should respond with status: "fail" and a json object in a particular format', () => {
       const mockResult = {
         headers: { 'Content-Type': 'application/json' },
-        statusCode: 400,
+        statusCode: 404,
         status: 'fail',
         message: 'The recipe does not exist'
       }
