@@ -80,14 +80,14 @@ describe('GET /recipe-by-id/:id', () => {
         
         const response = await request(app).get('/api/v1/recipes/recipe-by-id/16weddfsefsdsdf322fef3gn')
 
-        it('should respond with status code 400', () => {
-            expect(response.statusCode).toBe(400)
+        it('should respond with status code 404', () => {
+            expect(response.statusCode).toBe(404)
         })
 
         it('should respond with status: "fail" and a json object in a particular format', async () => {
             const mockResult = {
                 headers: { 'Content-Type': 'application/json' },
-                statusCode: 400,
+                statusCode: 404,
                 status: 'fail',
                 message: 'The recipe does not exist'
             }
